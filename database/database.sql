@@ -10,7 +10,8 @@ CREATE TABLE master.dbo.usuarios (
 	nome varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	perfil varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	senha varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	CONSTRAINT PK__usuarios__3213E83F6ED76B98 PRIMARY KEY (id),
+	telefone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__usuarios__3213E83F2725F9D2 PRIMARY KEY (id),
 	CONSTRAINT UKkfsp0s1tflm1cwlj8idhqsad0 UNIQUE (email)
 );
 ALTER TABLE master.dbo.usuarios WITH NOCHECK ADD CONSTRAINT CK__usuarios__perfil__2E3BD7D3 CHECK (([perfil]='USER' OR [perfil]='ADMIN'));
@@ -29,7 +30,7 @@ CREATE TABLE master.dbo.depoimentos (
 	descricao varchar(3000) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	atualizado_por_id bigint NULL,
 	criado_por_id bigint NOT NULL,
-	CONSTRAINT PK__depoimen__3213E83F7890D35F PRIMARY KEY (id),
+	CONSTRAINT PK__depoimen__3213E83F71D2FCDB PRIMARY KEY (id),
 	CONSTRAINT FK4ij6bh28vftfbjyu1i91x7e6u FOREIGN KEY (criado_por_id) REFERENCES master.dbo.usuarios(id),
 	CONSTRAINT FKgyc4xiluhgon2mfnd79joh8wk FOREIGN KEY (atualizado_por_id) REFERENCES master.dbo.usuarios(id)
 );
@@ -49,7 +50,7 @@ CREATE TABLE master.dbo.estatistica_eventos (
 	tipo_entidade varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	tipo_evento varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	usuario_id bigint NULL,
-	CONSTRAINT PK__estatist__3213E83F64F0403E PRIMARY KEY (id),
+	CONSTRAINT PK__estatist__3213E83F9A4B35E3 PRIMARY KEY (id),
 	CONSTRAINT FKcxwfhq0he9b7b4yeqn6ao8s1w FOREIGN KEY (usuario_id) REFERENCES master.dbo.usuarios(id)
 );
 ALTER TABLE master.dbo.estatistica_eventos WITH NOCHECK ADD CONSTRAINT CK__estatisti__tipo___22CA2527 CHECK (([tipo_entidade]='USUARIO' OR [tipo_entidade]='FORMULARIO' OR [tipo_entidade]='TREINAMENTO' OR [tipo_entidade]='DEPOIMENTO' OR [tipo_entidade]='NOTICIA'));
@@ -65,22 +66,23 @@ ALTER TABLE master.dbo.estatistica_eventos WITH NOCHECK ADD CONSTRAINT CK__estat
 CREATE TABLE master.dbo.formularios (
 	id bigint IDENTITY(1,1) NOT NULL,
 	atualizado_em datetime2 NULL,
-	categoria varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	criado_em datetime2 NOT NULL,
 	data_envio datetime2 NOT NULL,
-	email varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	nome varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
-	observacao text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-	telefone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	resposta text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	atualizado_por_id bigint NULL,
 	criado_por_id bigint NOT NULL,
+	categoria varchar(30) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	email varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	nome varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+	telefone varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	usuario_id bigint NULL,
-	CONSTRAINT PK__formular__3213E83F00DA43DD PRIMARY KEY (id),
+	observacao text COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+	CONSTRAINT PK__formular__3213E83F97272CAA PRIMARY KEY (id),
 	CONSTRAINT FK10ngrhnjuymyb4bj952acn71b FOREIGN KEY (criado_por_id) REFERENCES master.dbo.usuarios(id),
 	CONSTRAINT FKqin91uua9mu4ggech7e1p80qp FOREIGN KEY (atualizado_por_id) REFERENCES master.dbo.usuarios(id),
-	CONSTRAINT FK_formularios_usuario FOREIGN KEY (usuario_id) REFERENCES master.dbo.usuarios(id)
+	CONSTRAINT FKsxr6ljaxx0j2dlwllqa6boxgm FOREIGN KEY (usuario_id) REFERENCES master.dbo.usuarios(id)
 );
-ALTER TABLE master.dbo.formularios WITH NOCHECK ADD CONSTRAINT CK_formularios_categoria CHECK (([categoria]='CEGO' OR [categoria]='FAMILIA_ACOLHEDORA' OR [categoria]='SOCIALIZADORA' OR [categoria]='DOACAO'));
+ALTER TABLE master.dbo.formularios WITH NOCHECK ADD CONSTRAINT CK__formulari__categ__49E3F248 CHECK (([categoria]='DOACAO' OR [categoria]='SOCIALIZADORA' OR [categoria]='FAMILIA_ACOLHEDORA' OR [categoria]='CEGO'));
 
 
 -- master.dbo.noticias definição
@@ -104,7 +106,7 @@ CREATE TABLE master.dbo.noticias (
 	titulo varchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	atualizado_por_id bigint NULL,
 	criado_por_id bigint NOT NULL,
-	CONSTRAINT PK__noticias__3213E83F710486A8 PRIMARY KEY (id),
+	CONSTRAINT PK__noticias__3213E83F68D6AEEB PRIMARY KEY (id),
 	CONSTRAINT FK21ppep66eofh6fbjif2xyrlms FOREIGN KEY (criado_por_id) REFERENCES master.dbo.usuarios(id),
 	CONSTRAINT FKou7a61gc66rwk22n6k7sqryql FOREIGN KEY (atualizado_por_id) REFERENCES master.dbo.usuarios(id)
 );
@@ -127,7 +129,7 @@ CREATE TABLE master.dbo.treinamentos (
 	titulo varchar(150) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	atualizado_por_id bigint NULL,
 	criado_por_id bigint NOT NULL,
-	CONSTRAINT PK__treiname__3213E83FC023BB1E PRIMARY KEY (id),
+	CONSTRAINT PK__treiname__3213E83FC51B130D PRIMARY KEY (id),
 	CONSTRAINT FKj1nuilxsoy3d16mmmsaps7f4l FOREIGN KEY (criado_por_id) REFERENCES master.dbo.usuarios(id),
 	CONSTRAINT FKjs9ihncqq3ffxgqcfev2c4ga8 FOREIGN KEY (atualizado_por_id) REFERENCES master.dbo.usuarios(id)
 );
