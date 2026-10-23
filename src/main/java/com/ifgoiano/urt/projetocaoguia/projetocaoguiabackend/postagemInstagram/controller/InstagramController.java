@@ -1,7 +1,7 @@
 package com.ifgoiano.urt.projetocaoguia.projetocaoguiabackend.postagemInstagram.controller;
 
 import com.ifgoiano.urt.projetocaoguia.projetocaoguiabackend.postagemInstagram.model.PostagemInstagram;
-import com.ifgoiano.urt.projetocaoguia.projetocaoguiabackend.postagemInstagram.repository.InstagramRepository;
+import com.ifgoiano.urt.projetocaoguia.projetocaoguiabackend.postagemInstagram.service.InstagramScraperService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -9,19 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/instagram")
 @RequiredArgsConstructor
 @Tag(name = "Instagram", description = "Endpoints para sincronização e gerenciamento de postagens do Instagram")
 public class InstagramController {
 
-    private final InstagramRepository repository;
+    private final InstagramScraperService service;
 
-    @PostMapping("/sincronizar")
-    @Operation(summary = "Recebe e salva postagens do Instagram via script Python")
+    @GetMapping("/sincronizar")
+    @Operation(summary = "Sincronizar postagens do Instagram via Web Scraping")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PostagemInstagram> sincronizar(@RequestBody PostagemInstagram postagem) {
-        PostagemInstagram novaPostagem = repository.save(postagem);
-        return ResponseEntity.ok(novaPostagem);
+    public ResponseEntity<List<PostagemInstagram>> sincronizar() {
+        String urlPerfil = "https://www.instagram.com/seu_perfil_aqui/";
+        List<PostagemInstagram> novasPostagens = service.sincronizarUltimasPostagens(urlPerfil);
+        return ResponseEntity.ok(novasPostagens);
     }
 }
