@@ -18,13 +18,13 @@ public class PostagemInstagram {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, columnDefinition = "NVARCHAR(500)")
     private String urlImagem;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "NVARCHAR(MAX)")
     private String textoDescricao;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, columnDefinition = "NVARCHAR(500)")
     private String linkPostagem;
 
     @Column(nullable = false)

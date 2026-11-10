@@ -9,8 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+
 @RestController
 @RequestMapping("/api/instagram")
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @Tag(name = "Instagram", description = "Endpoints para sincronização e gerenciamento de postagens do Instagram")
 public class InstagramController {
@@ -23,5 +26,14 @@ public class InstagramController {
     public ResponseEntity<PostagemInstagram> sincronizar(@RequestBody PostagemInstagram postagem) {
         PostagemInstagram novaPostagem = repository.save(postagem);
         return ResponseEntity.ok(novaPostagem);
+    }
+
+    @GetMapping("/ultima")
+    @Operation(summary = "Busca a publicação mais recente do Instagram salva no banco")
+    public ResponseEntity<PostagemInstagram> buscarUltima() {
+        return repository.findAll().stream()
+                .max(Comparator.comparing(PostagemInstagram::getId))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
