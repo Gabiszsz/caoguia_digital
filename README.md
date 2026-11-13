@@ -104,7 +104,7 @@ Projeto desenvolvido por estudantes do **IF Goiano – Campus Urutaí**.
 ### ⚙️ Desenvolvimento Back-end
 
 * Khauan
-* João Vitor
+* Daniel
 * Renan
 
 ---
