@@ -1,0 +1,2161 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cão Guia Digital - IF Goiano | Acessibilidade Inclusiva</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Poppins & Lexend para alta legibilidade) -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f4f7f2',
+                            100: '#e3ebd9',
+                            200: '#c7d9b5',
+                            500: '#5e8940',
+                            600: '#4c6c32',
+                            700: '#3a5327',
+                            800: '#2c3e1e',
+                            900: '#1e2b15',
+                        },
+                        earth: {
+                            100: '#f9f6f0',
+                            200: '#eddccb',
+                            500: '#be926e',
+                            600: '#a37553',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        readable: ['Lexend', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* =========================================================
+           1. ANÉIS DE FOCO DE ALTA VISIBILIDADE (WCAG AAA)
+           ========================================================= */
+        *:focus-visible {
+            outline: 3px solid #d97706 !important;
+            outline-offset: 3px !important;
+            box-shadow: 0 0 0 6px rgba(217, 119, 6, 0.25) !important;
+        }
+
+        /* Destaque visual durante leitura por voz */
+        .reader-highlight {
+            outline: 3px solid #2563eb !important;
+            outline-offset: 4px;
+            background-color: rgba(37, 99, 235, 0.12) !important;
+            border-radius: 0.75rem;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* =========================================================
+           2. FILTROS DE DALTONISMO (APLICAÇÃO NO CONTAINER PRINCIPAL)
+           Nota: Aplicado ao wrapper principal para não quebrar elementos fixed
+           ========================================================= */
+        body.cb-protanopia #app-wrapper {
+            filter: url('#protanopia-filter');
+        }
+
+        body.cb-deuteranopia #app-wrapper {
+            filter: url('#deuteranopia-filter');
+        }
+
+        body.cb-tritanopia #app-wrapper {
+            filter: url('#tritanopia-filter');
+        }
+
+        body.cb-achromatopsia #app-wrapper {
+            filter: url('#achromatopsia-filter');
+        }
+
+        /* Reforço visual não-dependente de cor quando modo daltonismo está ativo */
+        body[class*="cb-"] a:not(.no-underline-cb),
+        body[class*="cb-"] button {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        body[class*="cb-"] .status-badge {
+            border: 2px dashed currentColor !important;
+            font-weight: 800 !important;
+        }
+
+        /* =========================================================
+           3. MODOS DE CONTRASTE E LEGIBILIDADE
+           ========================================================= */
+        /* Alto Contraste (Preto + Amarelo) */
+        body.high-contrast {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        body.high-contrast .glass-card,
+        body.high-contrast header,
+        body.high-contrast aside,
+        body.high-contrast footer,
+        body.high-contrast input,
+        body.high-contrast select,
+        body.high-contrast textarea,
+        body.high-contrast details {
+            background: #0a0a0a !important;
+            background-color: #0a0a0a !important;
+            color: #ffffff !important;
+            border: 2px solid #ffff00 !important;
+        }
+
+        body.high-contrast h1,
+        body.high-contrast h2,
+        body.high-contrast h3,
+        body.high-contrast h4,
+        body.high-contrast button,
+        body.high-contrast a,
+        body.high-contrast label,
+        body.high-contrast span {
+            color: #ffff00 !important;
+        }
+
+        body.high-contrast button[type="submit"],
+        body.high-contrast .bg-brand-600 {
+            background-color: #ffff00 !important;
+            color: #000000 !important;
+            font-weight: 800 !important;
+        }
+
+        body.high-contrast button[type="submit"] *,
+        body.high-contrast .bg-brand-600 * {
+            color: #000000 !important;
+        }
+
+        /* Contraste Invertido */
+        body.inverted-contrast #app-wrapper {
+            filter: invert(1) hue-rotate(180deg);
+        }
+
+        /* Espaçamento de Texto (Dislexia / Baixa Visão) */
+        body.text-spacing-wide * {
+            letter-spacing: 0.08em !important;
+            word-spacing: 0.16em !important;
+            line-height: 1.85 !important;
+        }
+
+        /* Fonte Legível (Lexend) */
+        body.readable-font,
+        body.readable-font * {
+            font-family: 'Lexend', sans-serif !important;
+        }
+
+        /* Cursor Ampliado */
+        body.large-cursor,
+        body.large-cursor * {
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 32 32'><path d='M4 2 L26 16 L16 19 L21 29 L17 31 L12 21 L4 27 Z' fill='%23ffff00' stroke='%23000000' stroke-width='2.5'/></svg>") 4 2, auto !important;
+        }
+
+        /* Pausar Animações (Sensibilidade Vestibular) */
+        body.reduce-motion *,
+        body.reduce-motion *::before,
+        body.reduce-motion *::after {
+            animation: none !important;
+            transition: none !important;
+            scroll-behavior: auto !important;
+        }
+
+        /* Animação das Patinhas Flutuantes */
+        @keyframes floatPaw {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-15px) rotate(10deg);
+                opacity: 0.45;
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.2;
+            }
+        }
+
+        .floating-paw {
+            animation: floatPaw 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* =========================================================
+           4. COMPONENTES DO MENU DE ACESSIBILIDADE
+           ========================================================= */
+        /* Destacar Links */
+        body.highlight-links a,
+        body.highlight-links button:not(#accessibilityMainBtn):not(.a11y-btn) {
+            outline: 3px solid #facc15 !important;
+            outline-offset: 2px !important;
+            text-decoration: underline !important;
+            text-decoration-thickness: 3px !important;
+            text-decoration-color: #ef4444 !important;
+        }
+
+        /* Botões em Grid do Painel (Estilo Profissional) */
+        .a11y-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.75rem 0.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            color: #4b5563;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            line-height: 1.1;
+        }
+
+        .a11y-btn:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+
+        .a11y-btn.active {
+            background-color: #5e8940 !important;
+            border-color: #4c6c32 !important;
+            color: #ffffff !important;
+        }
+
+        .a11y-btn i {
+            font-size: 1.25rem;
+            margin-bottom: 0.15rem;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-earth-100 text-gray-800 font-sans antialiased relative min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- =========================================================
+         DEFINIÇÕES SVG OCULTAS PARA SIMULAÇÃO / CORREÇÃO DE DALTONISMO
+         Matrizes científicas calibradas (Machado et al.)
+         ========================================================= -->
+    <svg aria-hidden="true" class="hidden w-0 h-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <!-- Protanopia (Deficiência de Vermelho - Daltonismo Tipo 1) -->
+            <filter id="protanopia-filter">
+                <feColorMatrix type="matrix" values="
+                    0.567, 0.433, 0.000, 0, 0
+                    0.558, 0.442, 0.000, 0, 0
+                    0.000, 0.242, 0.758, 0, 0
+                    0.000, 0.000, 0.000, 1, 0" />
+            </filter>
+            <!-- Deuteranopia (Deficiência de Verde - Daltonismo Tipo 2) -->
+            <filter id="deuteranopia-filter">
+                <feColorMatrix type="matrix" values="
+                    0.625, 0.375, 0.000, 0, 0
+                    0.700, 0.300, 0.000, 0, 0
+                    0.000, 0.300, 0.700, 0, 0
+                    0.000, 0.000, 0.000, 1, 0" />
+            </filter>
+            <!-- Tritanopia (Deficiência de Azul/Amarelo - Daltonismo Tipo 3) -->
+            <filter id="tritanopia-filter">
+                <feColorMatrix type="matrix" values="
+                    0.950, 0.050, 0.000, 0, 0
+                    0.000, 0.433, 0.567, 0, 0
+                    0.000, 0.475, 0.525, 0, 0
+                    0.000, 0.000, 0.000, 1, 0" />
+            </filter>
+            <!-- Acromatopsia (Visão Monocromática / Escala de Cinza de Alto Contraste) -->
+            <filter id="achromatopsia-filter">
+                <!-- WIDGET FLUTUANTE DE ACESSIBILIDADE AVANÇADA & DALTONISMO
+         ========================================================= -->
+                <div class="fixed bottom-5 left-5 z-50 flex flex-col items-start gap-2" role="region"
+                    aria-label="Ferramentas de Acessibilidade">
+                    <!-- Painel Expansível (Layout Profissional Grid) -->
+                    <div id="accessibilityPanel"
+                        class="hidden glass-card p-0 rounded-3xl shadow-2xl border-2 border-brand-200 w-80 sm:w-[400px] mb-2 text-sm flex flex-col max-h-[85vh] overflow-hidden">
+
+                        <!-- Cabeçalho -->
+                        <div
+                            class="bg-white/90 p-4 border-b border-brand-100 flex justify-between items-center shrink-0">
+                            <div>
+                                <span class="font-extrabold text-brand-700 flex items-center gap-2 text-base">
+                                    <i class="fa-solid fa-universal-access"></i> Menu de Acessibilidade
+                                </span>
+                                <span class="text-[11px] text-gray-500 block mt-0.5">Atalho: Alt + A | Ler página: Alt +
+                                    L</span>
+                            </div>
+                            <button onclick="toggleAccessibilityPanel()" aria-label="Fechar painel de acessibilidade"
+                                class="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+
+                        <!-- Conteúdo Rolável -->
+                        <div class="p-4 overflow-y-auto space-y-6 bg-gray-50/50 flex-1">
+
+                            <!-- 1. LEITOR DE VOZ INTELIGENTE -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 px-1">
+                                    Leitura e Voz</h4>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <button onclick="speakCurrentPage()" class="a11y-btn" title="Ler página atual">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                        <span>Ler Página</span>
+                                    </button>
+                                    <button id="pauseResumeBtn" onclick="togglePauseSpeech()" class="a11y-btn"
+                                        title="Pausar leitura">
+                                        <i class="fa-solid fa-pause"></i>
+                                        <span>Pausar</span>
+                                    </button>
+                                    <button onclick="stopSpeech()" class="a11y-btn" title="Parar leitura">
+                                        <i class="fa-solid fa-stop"></i>
+                                        <span>Parar Voz</span>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 mt-2">
+                                    <button onclick="toggleHoverSpeech(this)" id="btn-hover-speech" class="a11y-btn">
+                                        <i class="fa-solid fa-comment-dots"></i>
+                                        <span>Ler ao Apontar</span>
+                                    </button>
+                                    <div
+                                        class="border border-gray-200 rounded-xl bg-white p-2 flex flex-col justify-center items-center gap-1">
+                                        <span class="text-[10px] font-bold text-gray-500 uppercase">Velocidade</span>
+                                        <div class="flex gap-1">
+                                            <button onclick="setSpeechRate(0.8)" id="rate-0.8"
+                                                class="rate-btn px-2 py-1 rounded text-xs bg-gray-100 text-gray-700 font-medium">Lento</button>
+                                            <button onclick="setSpeechRate(1.0)" id="rate-1.0"
+                                                class="rate-btn px-2 py-1 rounded text-xs bg-brand-600 text-white font-bold">1x</button>
+                                            <button onclick="setSpeechRate(1.3)" id="rate-1.3"
+                                                class="rate-btn px-2 py-1 rounded text-xs bg-gray-100 text-gray-700 font-medium">Rápido</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. TAMANHO E LEGIBILIDADE DO TEXTO -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 px-1">
+                                    Ajustes de Texto</h4>
+                                <div class="grid grid-cols-3 gap-2 mb-2">
+                                    <button onclick="changeFontSize(-1)" class="a11y-btn">
+                                        <i class="fa-solid fa-minus"></i>
+                                        <span>Diminuir</span>
+                                    </button>
+                                    <button onclick="resetFontSize()" class="a11y-btn text-lg font-mono">
+                                        100%
+                                    </button>
+                                    <button onclick="changeFontSize(1)" class="a11y-btn">
+                                        <i class="fa-solid fa-plus"></i>
+                                        <span>Aumentar</span>
+                                    </button>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button
+                                        onclick="toggleFeature('readable-font', this, 'Fonte legível para dislexia')"
+                                        id="btn-readable-font" class="a11y-btn">
+                                        <i class="fa-solid fa-font"></i>
+                                        <span>Fonte Dislexia</span>
+                                    </button>
+                                    <button
+                                        onclick="toggleFeature('text-spacing-wide', this, 'Espaçamento de texto aumentado')"
+                                        id="btn-text-spacing-wide" class="a11y-btn">
+                                        <i class="fa-solid fa-text-width"></i>
+                                        <span>Espaçamento</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 3. CONTRASTE VISUAL & DALTONISMO -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 px-1">
+                                    Cores e Contraste</h4>
+                                <div class="grid grid-cols-2 gap-2 mb-2">
+                                    <button onclick="setContrastMode('high')" id="contrast-high" class="a11y-btn">
+                                        <i class="fa-solid fa-circle-half-stroke"></i>
+                                        <span>Alto Contraste</span>
+                                    </button>
+                                    <button onclick="setContrastMode('inverted')" id="contrast-inverted"
+                                        class="a11y-btn">
+                                        <i class="fa-solid fa-droplet"></i>
+                                        <span>Cores Invertidas</span>
+                                    </button>
+                                </div>
+                                <div class="border border-gray-200 rounded-xl bg-white p-3 space-y-2 shadow-sm">
+                                    <label for="colorBlindSelect"
+                                        class="block text-[11px] font-bold text-gray-500 uppercase text-center flex items-center justify-center gap-1">
+                                        <i class="fa-solid fa-eye"></i> Filtros de Daltonismo
+                                    </label>
+                                    <select id="colorBlindSelect" onchange="setColorBlindMode(this.value)"
+                                        class="w-full p-2.5 rounded-lg border border-gray-200 bg-gray-50 text-xs font-semibold focus:ring-2 focus:ring-brand-500 text-center text-gray-700 outline-none">
+                                        <option value="none">Padrão (Sem filtro)</option>
+                                        <option value="protanopia">Protanopia (Sem Vermelho)</option>
+                                        <option value="deuteranopia">Deuteranopia (Sem Verde)</option>
+                                        <option value="tritanopia">Tritanopia (Sem Azul)</option>
+                                        <option value="achromatopsia">Acromatopsia (Escala de cinza)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 4. NAVEGAÇÃO E FOCO -->
+                            <div>
+                                <h4
+                                    class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest mb-3 px-1">
+                                    Navegação e Foco</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="toggleReadingGuide(this)" id="btn-reading-guide" class="a11y-btn">
+                                        <i class="fa-solid fa-ruler-horizontal"></i>
+                                        <span>Guia de Leitura</span>
+                                    </button>
+                                    <button onclick="toggleFeature('large-cursor', this, 'Cursor ampliado')"
+                                        id="btn-large-cursor" class="a11y-btn">
+                                        <i class="fa-solid fa-arrow-pointer"></i>
+                                        <span>Cursor Maior</span>
+                                    </button>
+                                    <button onclick="toggleFeature('highlight-links', this, 'Destaque de links')"
+                                        id="btn-highlight-links" class="a11y-btn">
+                                        <i class="fa-solid fa-link"></i>
+                                        <span>Destacar Links</span>
+                                    </button>
+                                    <button onclick="toggleFeature('reduce-motion', this, 'Pausa de animações')"
+                                        id="btn-reduce-motion" class="a11y-btn">
+                                        <i class="fa-solid fa-ban"></i>
+                                        <span>Parar Animações</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rodapé: Reset -->
+                        <div class="p-4 border-t border-gray-200 bg-white shrink-0">
+                            <button onclick="resetAllAccessibility()"
+                                class="w-full bg-red-50 hover:bg-red-100 text-red-700 py-3 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 border border-red-200">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Restaurar Padrões Originais</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botão Flutuante Principal -->
+                    <button onclick="toggleAccessibilityPanel()" aria-expanded="false" id="accessibilityMainBtn"
+                        class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-3.5 rounded-full shadow-2xl flex items-center justify-center gap-2.5 transition hover:scale-105 border-2 border-white">
+                        <i class="fa-solid fa-universal-access text-xl"></i>
+                        <span class="text-xs font-bold tracking-wide">Acessibilidade & Daltonismo</span>
+                    </button>
+                </div>
+
+                <!-- =========================================================
+         WRAPPER PRINCIPAL (Recebe filtros SVG de Daltonismo)
+         ========================================================= -->
+                <div id="app-wrapper" class="flex flex-col min-h-screen relative">
+
+                    <!-- Patinhas Decorativas Flutuantes de Fundo -->
+                    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
+                        <i class="fa-solid fa-paw text-brand-500/10 text-6xl absolute top-20 left-10 floating-paw"
+                            style="animation-delay: 0s;"></i>
+                        <i class="fa-solid fa-paw text-earth-500/15 text-8xl absolute top-1/3 right-12 floating-paw"
+                            style="animation-delay: 2s;"></i>
+                        <i class="fa-solid fa-paw text-brand-500/10 text-5xl absolute bottom-1/4 left-1/4 floating-paw"
+                            style="animation-delay: 4s;"></i>
+                        <i class="fa-solid fa-paw text-earth-500/20 text-7xl absolute bottom-10 right-1/3 floating-paw"
+                            style="animation-delay: 1s;"></i>
+                    </div>
+
+                    <!-- CABEÇALHO / NAVBAR -->
+                    <header class="sticky top-0 z-40 glass-card border-b border-brand-100">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                            <a href="#" onclick="navigateTo('home'); return false;"
+                                class="flex items-center gap-3 group no-underline-cb"
+                                aria-label="Cão Guia Digital - IF Goiano - Ir para o início">
+                                <div
+                                    class="w-12 h-12 bg-brand-600 rounded-2xl flex items-center justify-center text-white text-2xl shadow-lg shadow-brand-600/30 group-hover:scale-105 transition">
+                                    <i class="fa-solid fa-paw" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <span
+                                        class="text-xl font-extrabold text-gray-900 tracking-tight leading-none group-hover:text-brand-600 transition block">
+                                        Cão Guia Digital
+                                    </span>
+                                    <span
+                                        class="text-xs font-semibold text-brand-600 tracking-wider uppercase block mt-0.5">
+                                        IF Goiano
+                                    </span>
+                                </div>
+                            </a>
+
+                            <div class="flex items-center gap-3">
+                                <!-- Indicador Ativo de Modo Daltonismo (quando ativado) -->
+                                <span id="activeCbBadge"
+                                    class="hidden status-badge bg-blue-100 text-blue-900 px-3 py-1.5 rounded-xl text-xs font-bold items-center gap-1.5">
+                                    <i class="fa-solid fa-eye"></i>
+                                    <span id="activeCbLabel">Modo Daltônico</span>
+                                </span>
+
+                                <button onclick="navigateTo('solicitar-cao')"
+                                    class="hidden sm:flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl font-medium text-sm transition shadow-md shadow-brand-600/20">
+                                    <i class="fa-solid fa-shield-dog" aria-hidden="true"></i>
+                                    <span>Solicitar Cão Guia</span>
+                                </button>
+
+                                <button id="hamburgerBtn" onclick="toggleSidebarMenu()" aria-expanded="false"
+                                    aria-controls="sidebarMenu"
+                                    class="w-12 h-12 bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center text-xl transition border border-brand-200"
+                                    aria-label="Abrir menu de navegação">
+                                    <i id="hamburgerIcon" class="fa-solid fa-bars" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <!-- MENU LATERAL (SIDEBAR DRAWER) -->
+                    <div id="sidebarOverlay" onclick="toggleSidebarMenu()"
+                        class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300">
+                    </div>
+
+                    <aside id="sidebarMenu" role="dialog" aria-label="Menu de Navegação Principal"
+                        class="fixed top-0 right-0 h-full w-80 max-w-[85vw] glass-card z-50 shadow-2xl translate-x-full transition-transform duration-300 flex flex-col justify-between overflow-y-auto">
+                        <div class="p-6">
+                            <div class="flex items-center justify-between pb-6 border-b border-gray-200">
+                                <div class="flex items-center gap-2">
+                                    <i class="fa-solid fa-paw text-brand-600 text-xl" aria-hidden="true"></i>
+                                    <span class="font-bold text-gray-900">Navegação</span>
+                                </div>
+                                <button onclick="toggleSidebarMenu()" aria-label="Fechar menu de navegação"
+                                    class="w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition">
+                                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                                </button>
+                            </div>
+
+                            <nav class="mt-6 flex flex-col gap-2" aria-label="Seções do portal">
+                                <button onclick="navigateTo('home')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-house text-lg w-6" aria-hidden="true"></i>
+                                    <span>Início (Home)</span>
+                                </button>
+                                <button onclick="navigateTo('solicitar-cao')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left font-semibold text-brand-700 bg-brand-50 hover:bg-brand-100 transition border border-brand-200">
+                                    <i class="fa-solid fa-shield-dog text-lg w-6" aria-hidden="true"></i>
+                                    <span>Solicitar Cão Guia</span>
+                                </button>
+                                <button onclick="navigateTo('processo')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-diagram-project text-lg w-6" aria-hidden="true"></i>
+                                    <span>Processo de Treinamento</span>
+                                </button>
+                                <button onclick="navigateTo('noticias')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-newspaper text-lg w-6" aria-hidden="true"></i>
+                                    <span>Notícias e Artigos</span>
+                                </button>
+                                <button onclick="navigateTo('programa')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-circle-info text-lg w-6" aria-hidden="true"></i>
+                                    <span>Conheça o Programa</span>
+                                </button>
+                                <button onclick="navigateTo('caes')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-dog text-lg w-6" aria-hidden="true"></i>
+                                    <span>Nossos Cães Guias</span>
+                                </button>
+                                <button onclick="navigateTo('depoimentos')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-quote-left text-lg w-6" aria-hidden="true"></i>
+                                    <span>Depoimentos</span>
+                                </button>
+                                <button onclick="navigateTo('voluntariado')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-hands-holding-child text-lg w-6" aria-hidden="true"></i>
+                                    <span>Voluntariado</span>
+                                </button>
+                                <button onclick="navigateTo('doacoes')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-hand-holding-heart text-lg w-6" aria-hidden="true"></i>
+                                    <span>Doações</span>
+                                </button>
+                                <button onclick="navigateTo('educativo')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-book-open text-lg w-6" aria-hidden="true"></i>
+                                    <span>Conteúdo Educativo</span>
+                                </button>
+                                <button onclick="navigateTo('faq')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-circle-question text-lg w-6" aria-hidden="true"></i>
+                                    <span>Perguntas Frequentes (FAQ)</span>
+                                </button>
+                                <button onclick="navigateTo('contato')"
+                                    class="nav-btn flex items-center gap-3 px-4 py-3 rounded-xl text-left text-gray-700 hover:bg-brand-50 hover:text-brand-600 font-medium transition">
+                                    <i class="fa-solid fa-envelope text-lg w-6" aria-hidden="true"></i>
+                                    <span>Contato</span>
+                                </button>
+                            </nav>
+                        </div>
+
+                        <div class="p-6 border-t border-gray-200 bg-brand-50/50">
+                            <button onclick="navigateTo('login')"
+                                class="w-full bg-brand-600 hover:bg-brand-700 text-white font-medium py-3 rounded-xl transition flex items-center justify-center gap-2 shadow-md">
+                                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i>
+                                <span>Área do Usuário</span>
+                            </button>
+                        </div>
+                    </aside>
+
+                    <!-- CONTEÚDO PRINCIPAL (SPA) -->
+                    <main id="main-content" tabindex="-1"
+                        class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10 outline-none">
+
+                        <!-- 1. HOME SECTION -->
+                        <section id="sec-home" class="spa-section space-y-12" aria-labelledby="home-heading">
+                            <div
+                                class="glass-card rounded-3xl p-8 sm:p-12 relative overflow-hidden shadow-xl border border-white/60">
+                                <div class="max-w-2xl relative z-10 space-y-6">
+                                    <span
+                                        class="status-badge inline-flex items-center gap-2 px-3.5 py-1.5 bg-brand-100 text-brand-800 rounded-full text-xs font-bold">
+                                        <i class="fa-solid fa-shield-dog" aria-hidden="true"></i> Tecnologia,
+                                        Acessibilidade e Inclusão Social
+                                    </span>
+                                    <h1 id="home-heading"
+                                        class="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                                        Transformando vidas através de <span class="text-brand-600">Cães Guias</span>.
+                                    </h1>
+                                    <p class="text-gray-700 text-base sm:text-lg leading-relaxed">
+                                        O projeto Cão Guia Digital do Instituto Federal Goiano promove a inclusão,
+                                        autonomia e mobilidade de pessoas com deficiência visual por meio da formação,
+                                        treinamento e acolhimento gratuito de cães assistentes.
+                                    </p>
+                                    <div class="flex flex-wrap gap-4 pt-2">
+                                        <button onclick="navigateTo('solicitar-cao')"
+                                            class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3.5 rounded-2xl transition shadow-lg shadow-brand-600/30 flex items-center gap-2">
+                                            <i class="fa-solid fa-shield-dog" aria-hidden="true"></i>
+                                            <span>Solicitar Cão Guia</span>
+                                        </button>
+                                        <button onclick="navigateTo('processo')"
+                                            class="bg-white hover:bg-gray-50 text-gray-800 font-semibold px-6 py-3.5 rounded-2xl border border-gray-300 transition shadow-sm flex items-center gap-2">
+                                            <span>Como Funciona o Treino</span>
+                                            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="hidden lg:block absolute -right-10 -bottom-10 opacity-20 text-brand-600 pointer-events-none"
+                                    aria-hidden="true">
+                                    <i class="fa-solid fa-dog text-[320px]"></i>
+                                </div>
+                            </div>
+
+                            <!-- Métricas Clicáveis -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <button onclick="navigateTo('caes')"
+                                    class="text-left glass-card p-6 rounded-2xl border-l-4 border-brand-600 shadow-sm flex items-center gap-4 hover:shadow-md transition">
+                                    <div
+                                        class="w-14 h-14 bg-brand-100 rounded-2xl flex items-center justify-center text-brand-700 text-2xl shrink-0">
+                                        <i class="fa-solid fa-dog" aria-hidden="true"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-3xl font-extrabold text-gray-900 block">10+</span>
+                                        <span class="text-sm font-medium text-gray-700">Cães Treinados e
+                                            Entregues</span>
+                                    </div>
+                                </button>
+                                <button onclick="navigateTo('depoimentos')"
+                                    class="text-left glass-card p-6 rounded-2xl border-l-4 border-earth-600 shadow-sm flex items-center gap-4 hover:shadow-md transition">
+                                    <div
+                                        class="w-14 h-14 bg-earth-100 rounded-2xl flex items-center justify-center text-earth-600 text-2xl shrink-0">
+                                        <i class="fa-solid fa-users" aria-hidden="true"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-3xl font-extrabold text-gray-900 block">10+</span>
+                                        <span class="text-sm font-medium text-gray-700">Pessoas Atendidas</span>
+                                    </div>
+                                </button>
+                                <button onclick="navigateTo('programa')"
+                                    class="text-left glass-card p-6 rounded-2xl border-l-4 border-brand-600 shadow-sm flex items-center gap-4 hover:shadow-md transition">
+                                    <div
+                                        class="w-14 h-14 bg-brand-100 rounded-2xl flex items-center justify-center text-brand-700 text-2xl shrink-0">
+                                        <i class="fa-solid fa-user-graduate" aria-hidden="true"></i>
+                                    </div>
+                                    <div>
+                                        <span class="text-3xl font-extrabold text-gray-900 block">10+</span>
+                                        <span class="text-sm font-medium text-gray-700">Profissionais Envolvidos</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </section>
+
+                        <!-- 2. PROCESSO DE TREINAMENTO SECTION (EVOLUÇÃO DO FILHOTE AO CÃO ADULTO) -->
+                        <section id="sec-processo" class="spa-section hidden space-y-12"
+                            aria-labelledby="processo-heading">
+                            <div class="text-center max-w-3xl mx-auto space-y-3">
+                                <span
+                                    class="status-badge inline-block px-3.5 py-1 bg-brand-100 text-brand-800 rounded-full text-xs font-bold uppercase tracking-wider">
+                                    Evolução do Cão • Do Nascimento à Formatura
+                                </span>
+                                <h2 id="processo-heading" class="text-3xl sm:text-4xl font-extrabold text-gray-900">
+                                    Processo de Treinamento e Desenvolvimento</h2>
+                                <p class="text-gray-700 text-sm sm:text-base">
+                                    Acompanhe cada etapa de crescimento do animal: desde o filhote recém-nascido até
+                                    tornar-se um cão-guia adulto certificado e pronto para guiar.
+                                </p>
+                            </div>
+
+                            <div class="relative max-w-4xl mx-auto">
+                                <div class="hidden sm:block absolute left-1/2 transform -translate-x-1/2 top-8 bottom-8 w-1 bg-brand-200"
+                                    aria-hidden="true"></div>
+
+                                <div class="space-y-12">
+                                    <!-- FASE 1: FILHOTE RECÉM-NASCIDO -->
+                                    <article class="relative flex flex-col sm:flex-row items-center gap-6">
+                                        <div class="flex-1 text-left sm:text-right order-2 sm:order-1">
+                                            <div
+                                                class="glass-card p-6 rounded-3xl border border-brand-200 shadow-md space-y-3">
+                                                <div class="w-20 h-20 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center sm:ml-auto border border-brand-200"
+                                                    aria-hidden="true">
+                                                    <!-- SVG Ilustração Filhote Recém-nascido -->
+                                                    <svg class="w-14 h-14" viewBox="0 0 64 64" fill="currentColor">
+                                                        <path
+                                                            d="M32 14c-7.5 0-13.5 5.5-13.5 12.5 0 4.5 2.5 8.5 6.5 11v6.5c0 2.2 1.8 4 4 4h6c2.2 0 4-1.8 4-4v-6.5c4-2.5 6.5-6.5 6.5-11C45.5 19.5 39.5 14 32 14zm-6 12a2.5 2.5 0 110-5 2.5 2.5 0 010 5zm12 0a2.5 2.5 0 110-5 2.5 2.5 0 010 5zm-6 6c-2 0-3.5-1-3.5-2h7c0 1-1.5 2-3.5 2z" />
+                                                        <path d="M16 18c-3 1-5 4-4 8 1 3 4 4 6 3" opacity="0.7" />
+                                                        <path d="M48 18c3 1 5 4 4 8-1 3-4 4-6 3" opacity="0.7" />
+                                                    </svg>
+                                                </div>
+                                                <span
+                                                    class="status-badge inline-block px-2.5 py-0.5 rounded-lg bg-brand-100 text-brand-800 text-xs font-bold uppercase">
+                                                    Fase 1 • Filhote Recém-Nascido (0 a 2 meses)
+                                                </span>
+                                                <h3 class="text-xl font-bold text-gray-900">Seleção de Linhagem &
+                                                    Primeiros Estímulos</h3>
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    Os filhotes das raças Labrador e Golden Retriever permanecem na
+                                                    maternidade recebendo cuidados veterinários, estimulação neurológica
+                                                    precoce e testes iniciais de temperamento dócil.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-brand-600 text-white font-bold text-xl flex items-center justify-center shadow-lg border-4 border-earth-100 z-10 order-1 sm:order-2">
+                                            1
+                                        </div>
+                                        <div class="flex-1 order-3 hidden sm:block"></div>
+                                    </article>
+
+                                    <!-- FASE 2: FILHOTE EM CRESCIMENTO / SOCIALIZAÇÃO -->
+                                    <article class="relative flex flex-col sm:flex-row items-center gap-6">
+                                        <div class="flex-1 order-3 sm:order-1 hidden sm:block"></div>
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-earth-600 text-white font-bold text-xl flex items-center justify-center shadow-lg border-4 border-earth-100 z-10 order-1 sm:order-2">
+                                            2
+                                        </div>
+                                        <div class="flex-1 text-left order-2 sm:order-3">
+                                            <div
+                                                class="glass-card p-6 rounded-3xl border border-earth-200 shadow-md space-y-3">
+                                                <div class="w-20 h-20 bg-earth-100 text-earth-600 rounded-2xl flex items-center justify-center border border-earth-200"
+                                                    aria-hidden="true">
+                                                    <i class="fa-solid fa-paw text-4xl"></i>
+                                                </div>
+                                                <span
+                                                    class="status-badge inline-block px-2.5 py-0.5 rounded-lg bg-earth-200 text-earth-600 text-xs font-bold uppercase">
+                                                    Fase 2 • Filhote em Crescimento (2 a 14 meses)
+                                                </span>
+                                                <h3 class="text-xl font-bold text-gray-900">Acolhimento Familiar &
+                                                    Socialização Urbana</h3>
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    O filhote cresce junto a uma família acolhedora voluntária. Aprende
+                                                    regras de convivência doméstica, passeios de guia e habitua-se a
+                                                    transportes públicos, lojas e sons da cidade.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+
+                                    <!-- FASE 3: CÃO JOVEM ADULTO EM TREINO TÉCNICO -->
+                                    <article class="relative flex flex-col sm:flex-row items-center gap-6">
+                                        <div class="flex-1 text-left sm:text-right order-2 sm:order-1">
+                                            <div
+                                                class="glass-card p-6 rounded-3xl border border-brand-200 shadow-md space-y-3">
+                                                <div class="w-20 h-20 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center sm:ml-auto border border-brand-200"
+                                                    aria-hidden="true">
+                                                    <i class="fa-solid fa-shield-dog text-4xl"></i>
+                                                </div>
+                                                <span
+                                                    class="status-badge inline-block px-2.5 py-0.5 rounded-lg bg-brand-100 text-brand-800 text-xs font-bold uppercase">
+                                                    Fase 3 • Cão Jovem Adulto (14 a 18 meses)
+                                                </span>
+                                                <h3 class="text-xl font-bold text-gray-900">Treinamento Técnico Avançado
+                                                    com Arnês</h3>
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    Já com porte adulto, o cão passa a treinar com instrutores usando o
+                                                    arnês rígido. Aprende a desviar de obstáculos aéreos e no solo,
+                                                    indicar degraus e praticar a desobediência inteligente.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-brand-600 text-white font-bold text-xl flex items-center justify-center shadow-lg border-4 border-earth-100 z-10 order-1 sm:order-2">
+                                            3
+                                        </div>
+                                        <div class="flex-1 order-3 hidden sm:block"></div>
+                                    </article>
+
+                                    <!-- FASE 4: CÃO ADULTO & BENEFICIÁRIO -->
+                                    <article class="relative flex flex-col sm:flex-row items-center gap-6">
+                                        <div class="flex-1 order-3 sm:order-1 hidden sm:block"></div>
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-earth-600 text-white font-bold text-xl flex items-center justify-center shadow-lg border-4 border-earth-100 z-10 order-1 sm:order-2">
+                                            4
+                                        </div>
+                                        <div class="flex-1 text-left order-2 sm:order-3">
+                                            <div
+                                                class="glass-card p-6 rounded-3xl border border-earth-200 shadow-md space-y-3">
+                                                <div class="w-20 h-20 bg-earth-100 text-earth-600 rounded-2xl flex items-center justify-center border border-earth-200"
+                                                    aria-hidden="true">
+                                                    <i class="fa-solid fa-people-roof text-4xl"></i>
+                                                </div>
+                                                <span
+                                                    class="status-badge inline-block px-2.5 py-0.5 rounded-lg bg-earth-200 text-earth-600 text-xs font-bold uppercase">
+                                                    Fase 4 • Formação de Dupla (4 Semanas)
+                                                </span>
+                                                <h3 class="text-xl font-bold text-gray-900">Adaptação Presencial
+                                                    Dupla-Cão (Match)</h3>
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    O cão adulto é pareado com seu beneficiário conforme ritmo de
+                                                    caminhada e estilo de vida. Ambos treinam juntos em trajetos reais
+                                                    do dia a dia até consolidar total confiança.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </article>
+
+                                    <!-- FASE 5: CÃO GUIA ADULTO CERTIFICADO -->
+                                    <article class="relative flex flex-col sm:flex-row items-center gap-6">
+                                        <div class="flex-1 text-left sm:text-right order-2 sm:order-1">
+                                            <div
+                                                class="glass-card p-6 rounded-3xl border border-brand-200 shadow-md space-y-3">
+                                                <div class="w-20 h-20 bg-brand-100 text-brand-700 rounded-2xl flex items-center justify-center sm:ml-auto border border-brand-200"
+                                                    aria-hidden="true">
+                                                    <i class="fa-solid fa-award text-4xl"></i>
+                                                </div>
+                                                <span
+                                                    class="status-badge inline-block px-2.5 py-0.5 rounded-lg bg-brand-100 text-brand-800 text-xs font-bold uppercase">
+                                                    Fase 5 • Cão Guia Adulto Formado (Vida Útil)
+                                                </span>
+                                                <h3 class="text-xl font-bold text-gray-900">Formatura & Atuação como
+                                                    Guia Certificado</h3>
+                                                <p class="text-gray-700 text-sm leading-relaxed">
+                                                    O cão guia adulto recebe sua certificação oficial e atua ao lado do
+                                                    tutor com independência plena, contando com acompanhamento
+                                                    veterinário e técnico periódico do IF Goiano.
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="w-14 h-14 rounded-full bg-brand-600 text-white font-bold text-xl flex items-center justify-center shadow-lg border-4 border-earth-100 z-10 order-1 sm:order-2">
+                                            5
+                                        </div>
+                                        <div class="flex-1 order-3 hidden sm:block"></div>
+                                    </article>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 3. FORMULÁRIO COMPLETO DE 4 ETAPAS: SOLICITAÇÃO DE CÃO GUIA -->
+                        <section id="sec-solicitar-cao" class="spa-section hidden space-y-8"
+                            aria-labelledby="solicitar-heading">
+                            <div class="text-center max-w-3xl mx-auto space-y-3">
+                                <span
+                                    class="status-badge inline-block px-3.5 py-1 bg-brand-100 text-brand-800 rounded-full text-xs font-bold uppercase tracking-wider">
+                                    Inscrição Oficial de Beneficiários • 100% Gratuito
+                                </span>
+                                <h2 id="solicitar-heading" class="text-3xl sm:text-4xl font-extrabold text-gray-900">
+                                    Solicitação de Cão Guia</h2>
+                                <p class="text-gray-700 text-sm sm:text-base">
+                                    Preencha as 4 etapas abaixo para que nossa equipe multiprofissional avalie seu
+                                    perfil e realize o pareamento ideal. Campos marcados com * são obrigatórios.
+                                </p>
+                            </div>
+
+                            <div
+                                class="max-w-4xl mx-auto glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-brand-200">
+                                <form
+                                    onsubmit="handleFormSubmit(event, 'Solicitação enviada com sucesso! Protocolo #CGD-2026 registrado. Nossa equipe entrará em contato em até 5 dias úteis.')"
+                                    class="space-y-8">
+
+                                    <!-- ETAPA 1: DADOS PESSOAIS -->
+                                    <fieldset class="space-y-4">
+                                        <legend class="flex items-center gap-3 pb-2 border-b border-gray-200 w-full">
+                                            <span
+                                                class="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm">1</span>
+                                            <span class="text-lg font-bold text-gray-900">Dados Pessoais e
+                                                Endereço</span>
+                                        </legend>
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                                            <div class="sm:col-span-2">
+                                                <label for="sol-nome"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Nome Completo
+                                                    *</label>
+                                                <input id="sol-nome" type="text" required autocomplete="name"
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div>
+                                                <label for="sol-cpf"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">CPF *</label>
+                                                <input id="sol-cpf" type="text" placeholder="000.000.000-00" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div>
+                                                <label for="sol-nasc"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Data de
+                                                    Nascimento *</label>
+                                                <input id="sol-nasc" type="date" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div>
+                                                <label for="sol-email"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">E-mail *</label>
+                                                <input id="sol-email" type="email" required autocomplete="email"
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div>
+                                                <label for="sol-tel"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Telefone /
+                                                    WhatsApp *</label>
+                                                <input id="sol-tel" type="tel" placeholder="(00) 00000-0000" required
+                                                    autocomplete="tel"
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div>
+                                                <label for="sol-cep"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">CEP *</label>
+                                                <input id="sol-cep" type="text" placeholder="00000-000" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                            <div class="sm:col-span-2">
+                                                <label for="sol-endereco"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Endereço Completo
+                                                    (Rua, Número, Bairro, Cidade/UF) *</label>
+                                                <input id="sol-endereco" type="text" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <!-- ETAPA 2: CONDIÇÃO VISUAL E AUTONOMIA -->
+                                    <fieldset class="space-y-4">
+                                        <legend class="flex items-center gap-3 pb-2 border-b border-gray-200 w-full">
+                                            <span
+                                                class="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm">2</span>
+                                            <span class="text-lg font-bold text-gray-900">Condição Visual e
+                                                Orientação/Mobilidade</span>
+                                        </legend>
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                            <div>
+                                                <label for="sol-grau"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Grau de
+                                                    Deficiência Visual *</label>
+                                                <select id="sol-grau" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                                    <option value="">Selecione...</option>
+                                                    <option>Cegueira Total</option>
+                                                    <option>Baixa Visão Severa / Profunda</option>
+                                                    <option>Visão Monocular com restrição severa</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="sol-origem"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Origem e Tempo da
+                                                    Deficiência *</label>
+                                                <select id="sol-origem" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                                    <option value="">Selecione...</option>
+                                                    <option>Congênita (desde o nascimento)</option>
+                                                    <option>Adquirida há menos de 2 anos</option>
+                                                    <option>Adquirida entre 2 e 5 anos</option>
+                                                    <option>Adquirida há mais de 5 anos</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="sol-bengala"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Experiência com
+                                                    Bengala Longa *</label>
+                                                <select id="sol-bengala" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                                    <option value="">Selecione...</option>
+                                                    <option>Sim, utilizo com autonomia diária</option>
+                                                    <option>Sim, em fase de treinamento de O&M</option>
+                                                    <option>Não utilizo bengala</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="sol-altura"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Sua Altura
+                                                    Aproximada (para ajuste do arnês) *</label>
+                                                <input id="sol-altura" type="text" placeholder="Ex: 1,72 m" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <!-- ETAPA 3: HABITAÇÃO E ESTILO DE VIDA -->
+                                    <fieldset class="space-y-4">
+                                        <legend class="flex items-center gap-3 pb-2 border-b border-gray-200 w-full">
+                                            <span
+                                                class="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm">3</span>
+                                            <span class="text-lg font-bold text-gray-900">Habitação, Rotina e
+                                                Cuidados</span>
+                                        </legend>
+
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                            <div>
+                                                <label for="sol-moradia"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Tipo de Moradia
+                                                    *</label>
+                                                <select id="sol-moradia" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                                    <option value="">Selecione...</option>
+                                                    <option>Casa com quintal murado</option>
+                                                    <option>Casa sem quintal</option>
+                                                    <option>Apartamento</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label for="sol-animais"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Possui Outros
+                                                    Animais na Residência? *</label>
+                                                <select id="sol-animais" required
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                                    <option value="">Selecione...</option>
+                                                    <option>Não possuo outros animais</option>
+                                                    <option>Sim, cães castrados/vacinados</option>
+                                                    <option>Sim, gatos ou outros pets</option>
+                                                </select>
+                                            </div>
+                                            <div class="sm:col-span-2">
+                                                <label for="sol-rotina"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Descreva sua
+                                                    Rotina Diária e Meios de Transporte *</label>
+                                                <textarea id="sol-rotina" rows="3" required
+                                                    placeholder="Informe trajetos diários para trabalho, universidade, uso de ônibus/metrô e ritmo de caminhada..."
+                                                    class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm"></textarea>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <!-- ETAPA 4: DOCUMENTAÇÃO E ACESSIBILIDADE NO CONTATO -->
+                                    <fieldset class="space-y-4">
+                                        <legend class="flex items-center gap-3 pb-2 border-b border-gray-200 w-full">
+                                            <span
+                                                class="w-8 h-8 rounded-full bg-brand-600 text-white font-bold flex items-center justify-center text-sm">4</span>
+                                            <span class="text-lg font-bold text-gray-900">Laudo Médico e Preferência de
+                                                Contato</span>
+                                        </legend>
+
+                                        <div class="space-y-4 pt-2">
+                                            <div>
+                                                <label for="sol-laudo"
+                                                    class="block text-xs font-bold text-gray-700 mb-1">Anexar Laudo
+                                                    Oftalmológico / Atestado de Acuidade Visual (PDF ou Imagem)</label>
+                                                <input id="sol-laudo" type="file" accept=".pdf,.jpg,.jpeg,.png"
+                                                    class="w-full p-2.5 rounded-xl border border-gray-300 bg-white text-xs text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-brand-100 file:text-brand-800 hover:file:bg-brand-200">
+                                            </div>
+
+                                            <div class="p-4 bg-brand-50 rounded-2xl border border-brand-200 space-y-3">
+                                                <label class="flex items-start gap-3 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        class="mt-1 w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                                                    <span class="text-xs text-gray-800 leading-relaxed">
+                                                        <strong>Contato Acessível:</strong> Prefiro receber o contato
+                                                        inicial da equipe por mensagem de áudio no WhatsApp ou ligação
+                                                        telefônica.
+                                                    </span>
+                                                </label>
+                                                <label class="flex items-start gap-3 cursor-pointer">
+                                                    <input type="checkbox" required
+                                                        class="mt-1 w-4 h-4 text-brand-600 rounded focus:ring-brand-500">
+                                                    <span class="text-xs text-gray-800 leading-relaxed">
+                                                        <strong>Declaração e LGPD *:</strong> Declaro que as informações
+                                                        prestadas são verdadeiras e concordo com o tratamento de dados
+                                                        exclusivamente para avaliação no Programa Cão Guia Digital (IF
+                                                        Goiano).
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <button type="submit"
+                                        class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold p-4 rounded-2xl transition shadow-lg shadow-brand-600/30 flex items-center justify-center gap-2 text-base">
+                                        <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+                                        <span>Enviar Solicitação Oficial de Cão Guia</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+
+                        <!-- 4. NOTÍCIAS E ARTIGOS SECTION -->
+                        <section id="sec-noticias" class="spa-section hidden space-y-8"
+                            aria-labelledby="noticias-heading">
+                            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                                <div>
+                                    <span
+                                        class="status-badge inline-block px-3 py-1 bg-brand-100 text-brand-800 rounded-full text-xs font-bold uppercase tracking-wider">
+                                        Atualizações & Blog
+                                    </span>
+                                    <h2 id="noticias-heading" class="text-3xl font-extrabold text-gray-900 mt-2">
+                                        Notícias e Artigos</h2>
+                                    <p class="text-gray-700 text-sm">Fique por dentro das novidades, eventos e direitos
+                                        de acessibilidade.</p>
+                                </div>
+
+                                <div class="relative w-full md:w-72">
+                                    <label for="newsSearch" class="sr-only">Buscar notícias</label>
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-500"
+                                        aria-hidden="true"></i>
+                                    <input type="text" id="newsSearch" onkeyup="filterNews()"
+                                        placeholder="Buscar notícias..."
+                                        class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm glass-card">
+                                </div>
+                            </div>
+
+                            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <article
+                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
+                                    <div class="p-6 space-y-3">
+                                        <div class="flex items-center justify-between text-xs text-gray-600">
+                                            <span
+                                                class="status-badge bg-brand-100 text-brand-800 font-bold px-2.5 py-1 rounded-full">
+                                                <i class="fa-solid fa-universal-access mr-1"
+                                                    aria-hidden="true"></i>Inclusão
+                                            </span>
+                                            <span>15 de Outubro, 2026</span>
+                                        </div>
+                                        <h3 class="news-title text-xl font-bold text-gray-900">
+                                            IF Goiano entrega novo Cão-Guia formado no Campus Urutaí
+                                        </h3>
+                                        <p class="text-gray-700 text-sm leading-relaxed">
+                                            Mais uma dupla concluiu com êxito as etapas de treinamento avançado e
+                                            adaptação urbana, garantindo autonomia plena ao seu tutor.
+                                        </p>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <button
+                                            onclick="openNewsModal('IF Goiano entrega novo Cão-Guia formado no Campus Urutaí', 'A cerimônia marcou a entrega oficial de mais um cão-guia formado integralmente por profissionais e instrutores do IF Goiano. O animal passou por 18 meses de socialização e treino técnico para desvio de obstáculos urbanos e transporte coletivo.', '15 de Outubro, 2026')"
+                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
+                                            <span>Ler Artigo Completo</span>
+                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </article>
+
+                                <article
+                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
+                                    <div class="p-6 space-y-3">
+                                        <div class="flex items-center justify-between text-xs text-gray-600">
+                                            <span
+                                                class="status-badge bg-earth-200 text-earth-600 font-bold px-2.5 py-1 rounded-full">
+                                                <i class="fa-solid fa-scale-balanced mr-1"
+                                                    aria-hidden="true"></i>Direitos
+                                            </span>
+                                            <span>02 de Setembro, 2026</span>
+                                        </div>
+                                        <h3 class="news-title text-xl font-bold text-gray-900">
+                                            Conscientização sobre a Lei do Cão-Guia nos Transportes
+                                        </h3>
+                                        <p class="text-gray-700 text-sm leading-relaxed">
+                                            Ação educativa reforça junto às empresas de transporte coletivo o direito de
+                                            livre acesso garantido pela Lei Federal nº 11.126.
+                                        </p>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <button
+                                            onclick="openNewsModal('Conscientização sobre a Lei do Cão-Guia nos Transportes', 'A equipe do projeto Cão Guia Digital promoveu palestras e distribuiu materiais informativos para motoristas e cobradores sobre a obrigatoriedade de permitir o ingresso do cão-guia sem cobrança de taxas adicionais ou uso de focinheira.', '02 de Setembro, 2026')"
+                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
+                                            <span>Ler Artigo Completo</span>
+                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </article>
+
+                                <article
+                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
+                                    <div class="p-6 space-y-3">
+                                        <div class="flex items-center justify-between text-xs text-gray-600">
+                                            <span
+                                                class="status-badge bg-brand-100 text-brand-800 font-bold px-2.5 py-1 rounded-full">
+                                                <i class="fa-solid fa-heart mr-1" aria-hidden="true"></i>Voluntariado
+                                            </span>
+                                            <span>20 de Agosto, 2026</span>
+                                        </div>
+                                        <h3 class="news-title text-xl font-bold text-gray-900">
+                                            Abertas inscrições para novas Famílias Acolhedoras
+                                        </h3>
+                                        <p class="text-gray-700 text-sm leading-relaxed">
+                                            Projeto busca voluntários residentes na região para acolher filhotes de
+                                            Golden Retriever durante o primeiro ano de vida.
+                                        </p>
+                                    </div>
+                                    <div class="p-6 pt-0">
+                                        <button
+                                            onclick="openNewsModal('Abertas inscrições para novas Famílias Acolhedoras', 'Procuramos famílias dispostas a oferecer lar temporário e carinho aos nossos filhotes durante sua fase inicial de socialização. Todos os custos de ração, saúde e acompanhamento veterinário são custeados pelo IF Goiano.', '20 de Agosto, 2026')"
+                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
+                                            <span>Ler Artigo Completo</span>
+                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </article>
+                            </div>
+                        </section>
+
+                        <!-- 5. PROGRAMA SECTION -->
+                        <section id="sec-programa" class="spa-section hidden space-y-10"
+                            aria-labelledby="programa-heading">
+                            <div class="text-center max-w-3xl mx-auto space-y-3">
+                                <h2 id="programa-heading" class="text-3xl font-bold text-gray-900">Nosso Propósito &
+                                    Pilares</h2>
+                                <p class="text-gray-700">Conheça como estruturamos nossas ações no IF Goiano para
+                                    garantir excelência no treinamento e inclusão real.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                                <div class="glass-card p-8 rounded-3xl space-y-4 shadow-md border border-gray-200">
+                                    <div
+                                        class="w-12 h-12 bg-brand-100 text-brand-800 rounded-xl flex items-center justify-center text-xl font-bold">
+                                        01</div>
+                                    <h3 class="text-xl font-bold text-gray-900">Inclusão Social</h3>
+                                    <p class="text-gray-700 text-sm leading-relaxed">Promover o direito de ir e vir com
+                                        segurança, autonomia e independência para pessoas com deficiência visual.</p>
+                                </div>
+                                <div class="glass-card p-8 rounded-3xl space-y-4 shadow-md border border-gray-200">
+                                    <div
+                                        class="w-12 h-12 bg-earth-200 text-earth-600 rounded-xl flex items-center justify-center text-xl font-bold">
+                                        02</div>
+                                    <h3 class="text-xl font-bold text-gray-900">Treinamento Especializado</h3>
+                                    <p class="text-gray-700 text-sm leading-relaxed">Etapas rigorosas de socialização e
+                                        instrução técnica adaptadas ao perfil de cada cão e beneficiário.</p>
+                                </div>
+                                <div class="glass-card p-8 rounded-3xl space-y-4 shadow-md border border-gray-200">
+                                    <div
+                                        class="w-12 h-12 bg-brand-100 text-brand-800 rounded-xl flex items-center justify-center text-xl font-bold">
+                                        03</div>
+                                    <h3 class="text-xl font-bold text-gray-900">Impacto Comunitário</h3>
+                                    <p class="text-gray-700 text-sm leading-relaxed">Engajamento de famílias
+                                        acolhedoras, voluntários e conscientização pública sobre os direitos do
+                                        cão-guia.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 6. CÃES GUIAS SECTION -->
+                        <section id="sec-caes" class="spa-section hidden space-y-8" aria-labelledby="caes-heading">
+                            <div>
+                                <h2 id="caes-heading" class="text-3xl font-bold text-gray-900">Nossos Cães Guias</h2>
+                                <p class="text-gray-700">Conheça alguns dos cães em formação e já formados pelo
+                                    programa.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="glass-card rounded-3xl overflow-hidden shadow-md border border-gray-200">
+                                    <div
+                                        class="h-48 bg-brand-200 relative flex items-center justify-center text-brand-700">
+                                        <i class="fa-solid fa-dog text-6xl" aria-hidden="true"></i>
+                                        <span
+                                            class="status-badge absolute top-4 right-4 bg-brand-700 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                            <i class="fa-solid fa-graduation-cap mr-1" aria-hidden="true"></i>Em
+                                            Treinamento
+                                        </span>
+                                    </div>
+                                    <div class="p-6 space-y-3">
+                                        <h3 class="text-xl font-bold text-gray-900">Thor (Golden Retriever)</h3>
+                                        <p class="text-gray-700 text-sm">Fase avançada de obediência urbana e desvio de
+                                            obstáculos.</p>
+                                    </div>
+                                </div>
+                                <div class="glass-card rounded-3xl overflow-hidden shadow-md border border-gray-200">
+                                    <div
+                                        class="h-48 bg-earth-200 relative flex items-center justify-center text-earth-600">
+                                        <i class="fa-solid fa-shield-dog text-6xl" aria-hidden="true"></i>
+                                        <span
+                                            class="status-badge absolute top-4 right-4 bg-earth-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                            <i class="fa-solid fa-check-circle mr-1" aria-hidden="true"></i>Formado
+                                        </span>
+                                    </div>
+                                    <div class="p-6 space-y-3">
+                                        <h3 class="text-xl font-bold text-gray-900">Bella (Labrador)</h3>
+                                        <p class="text-gray-700 text-sm">Atualmente em atividade acompanhando sua nova
+                                            dupla em Goiânia.</p>
+                                    </div>
+                                </div>
+                                <div class="glass-card rounded-3xl overflow-hidden shadow-md border border-gray-200">
+                                    <div
+                                        class="h-48 bg-brand-100 relative flex items-center justify-center text-brand-700">
+                                        <i class="fa-solid fa-bone text-6xl" aria-hidden="true"></i>
+                                        <span
+                                            class="status-badge absolute top-4 right-4 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
+                                            <i class="fa-solid fa-house-user mr-1" aria-hidden="true"></i>Socialização
+                                        </span>
+                                    </div>
+                                    <div class="p-6 space-y-3">
+                                        <h3 class="text-xl font-bold text-gray-900">Max (Labrador)</h3>
+                                        <p class="text-gray-700 text-sm">Em fase de acolhimento com família voluntária
+                                            para adaptação urbana.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 7. DEPOIMENTOS SECTION -->
+                        <section id="sec-depoimentos" class="spa-section hidden space-y-8"
+                            aria-labelledby="depoimentos-heading">
+                            <div class="text-center max-w-2xl mx-auto space-y-2">
+                                <h2 id="depoimentos-heading" class="text-3xl font-bold text-gray-900">Depoimentos</h2>
+                                <p class="text-gray-700">Histórias reais de quem teve a vida transformada pelo projeto.
+                                </p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <blockquote
+                                    class="glass-card p-6 rounded-3xl space-y-4 shadow-sm border border-gray-200">
+                                    <i class="fa-solid fa-quote-left text-3xl text-brand-600/40" aria-hidden="true"></i>
+                                    <p class="text-gray-700 text-sm italic">"O cão-guia me deu a liberdade de ir para a
+                                        universidade sozinha com total segurança e confiança."</p>
+                                    <footer class="pt-4 border-t border-gray-200">
+                                        <strong class="font-bold text-gray-900 block">Gabriella</strong>
+                                        <span class="text-xs font-semibold text-brand-700">Beneficiária</span>
+                                    </footer>
+                                </blockquote>
+                                <blockquote
+                                    class="glass-card p-6 rounded-3xl space-y-4 shadow-sm border border-gray-200">
+                                    <i class="fa-solid fa-quote-left text-3xl text-brand-600/40" aria-hidden="true"></i>
+                                    <p class="text-gray-700 text-sm italic">"Ser família acolhedora foi uma das
+                                        experiências mais enriquecedoras para toda a nossa casa."</p>
+                                    <footer class="pt-4 border-t border-gray-200">
+                                        <strong class="font-bold text-gray-900 block">Khauan</strong>
+                                        <span class="text-xs font-semibold text-brand-700">Voluntário Acolhedor</span>
+                                    </footer>
+                                </blockquote>
+                                <blockquote
+                                    class="glass-card p-6 rounded-3xl space-y-4 shadow-sm border border-gray-200">
+                                    <i class="fa-solid fa-quote-left text-3xl text-brand-600/40" aria-hidden="true"></i>
+                                    <p class="text-gray-700 text-sm italic">"Ver a evolução do cão desde filhote até a
+                                        entrega final é algo emocionante e recompensador."</p>
+                                    <footer class="pt-4 border-t border-gray-200">
+                                        <strong class="font-bold text-gray-900 block">Ana Lia</strong>
+                                        <span class="text-xs font-semibold text-brand-700">Instrutora de
+                                            Treinamento</span>
+                                    </footer>
+                                </blockquote>
+                            </div>
+                        </section>
+
+                        <!-- 8. VOLUNTARIADO SECTION -->
+                        <section id="sec-voluntariado" class="spa-section hidden space-y-8"
+                            aria-labelledby="voluntariado-heading">
+                            <div class="glass-card rounded-3xl p-8 shadow-lg space-y-6 border border-gray-200">
+                                <h2 id="voluntariado-heading" class="text-3xl font-bold text-gray-900">Seja Família
+                                    Acolhedora ou Voluntário</h2>
+                                <p class="text-gray-700 max-w-2xl">
+                                    As famílias acolhedoras são fundamentais para o desenvolvimento dos filhotes durante
+                                    o primeiro ano de vida, ensinando regras básicas de convivência e socialização.
+                                </p>
+
+                                <form
+                                    onsubmit="handleFormSubmit(event, 'Inscrição de voluntariado registrada com sucesso!')"
+                                    class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+                                    <div>
+                                        <label for="vol-nome" class="block text-xs font-bold text-gray-700 mb-1">Nome
+                                            Completo *</label>
+                                        <input id="vol-nome" type="text" required
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="vol-email" class="block text-xs font-bold text-gray-700 mb-1">E-mail
+                                            *</label>
+                                        <input id="vol-email" type="email" required
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="vol-tel" class="block text-xs font-bold text-gray-700 mb-1">Telefone
+                                            / WhatsApp *</label>
+                                        <input id="vol-tel" type="tel" required
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="vol-cidade"
+                                            class="block text-xs font-bold text-gray-700 mb-1">Cidade / Estado *</label>
+                                        <input id="vol-cidade" type="text" required
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="vol-area"
+                                            class="block text-xs font-bold text-gray-700 mb-1">Modalidade de
+                                            Voluntariado *</label>
+                                        <select id="vol-area"
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                            <option>Família Acolhedora (12 meses)</option>
+                                            <option>Apoio em Eventos & Educação Inclusiva</option>
+                                            <option>Apoio Veterinário / Técnico</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="vol-disp"
+                                            class="block text-xs font-bold text-gray-700 mb-1">Disponibilidade Semanal
+                                            *</label>
+                                        <select id="vol-disp"
+                                            class="w-full p-3.5 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                            <option>Período Integral (Home Office / Família presente)</option>
+                                            <option>Parcial (Manhã / Tarde)</option>
+                                            <option>Finais de Semana e Eventos</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit"
+                                        class="md:col-span-2 bg-brand-600 hover:bg-brand-700 text-white font-bold p-4 rounded-xl transition shadow-md text-sm">
+                                        Enviar Inscrição de Voluntário
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+
+                        <!-- 9. DOAÇÕES SECTION -->
+                        <section id="sec-doacoes" class="spa-section hidden space-y-8"
+                            aria-labelledby="doacoes-heading">
+                            <div class="text-center max-w-2xl mx-auto space-y-3">
+                                <h2 id="doacoes-heading" class="text-3xl font-bold text-gray-900">Apoie com uma Doação
+                                </h2>
+                                <p class="text-gray-700">Sua contribuição ajuda na compra de ração super premium,
+                                    vacinas, cuidados veterinários e arneses de treino.</p>
+                            </div>
+
+                            <div
+                                class="max-w-md mx-auto glass-card p-8 rounded-3xl text-center space-y-6 shadow-xl border border-brand-200">
+                                <div
+                                    class="w-16 h-16 bg-brand-100 text-brand-700 rounded-full flex items-center justify-center text-2xl mx-auto">
+                                    <i class="fa-solid fa-qrcode" aria-hidden="true"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">Chave Pix Oficial</h3>
+                                    <p class="text-xs text-gray-600 mt-1">Instituto Federal Goiano</p>
+                                </div>
+                                <div
+                                    class="bg-gray-100 p-3.5 rounded-xl flex items-center justify-between text-sm font-mono text-gray-800 border border-gray-300">
+                                    <span id="pixKey" class="truncate">pix@caoguiadigital.ifgoiano.edu.br</span>
+                                    <button onclick="copyPix()"
+                                        class="bg-brand-600 text-white px-3 py-1.5 rounded-lg hover:bg-brand-700 font-bold ml-2 text-xs shrink-0">
+                                        <i class="fa-regular fa-copy mr-1" aria-hidden="true"></i>Copiar
+                                    </button>
+                                </div>
+                                <p class="text-xs text-gray-600">Qualquer valor ajuda a manter o programa ativo e 100%
+                                    gratuito para os beneficiários.</p>
+                            </div>
+                        </section>
+
+                        <!-- 10. CONTEÚDO EDUCATIVO SECTION -->
+                        <section id="sec-educativo" class="spa-section hidden space-y-8"
+                            aria-labelledby="educativo-heading">
+                            <div>
+                                <h2 id="educativo-heading" class="text-3xl font-bold text-gray-900">Conteúdo Educativo &
+                                    Legislação</h2>
+                                <p class="text-gray-700">Aprenda sobre os direitos garantidos por lei e como agir ao
+                                    encontrar um cão-guia em serviço.</p>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="glass-card p-6 rounded-3xl space-y-3 border border-gray-200">
+                                    <span
+                                        class="status-badge inline-block px-2.5 py-0.5 bg-brand-100 text-brand-800 rounded text-xs font-bold uppercase">Lei
+                                        Federal Nº 11.126/2005</span>
+                                    <h3 class="text-xl font-bold text-gray-900">Direito de Acesso Livre</h3>
+                                    <p class="text-gray-700 text-sm leading-relaxed">Pessoas com deficiência visual
+                                        acompanhadas de cão-guia têm o direito garantido de ingressar e permanecer em
+                                        todos os locais públicos ou privados de uso público, transportes e
+                                        estabelecimentos comerciais.</p>
+                                </div>
+                                <div class="glass-card p-6 rounded-3xl space-y-3 border border-gray-200">
+                                    <span
+                                        class="status-badge inline-block px-2.5 py-0.5 bg-earth-200 text-earth-600 rounded text-xs font-bold uppercase">Etiqueta
+                                        & Respeito</span>
+                                    <h3 class="text-xl font-bold text-gray-900">Não Distraia o Cão em Trabalho</h3>
+                                    <p class="text-gray-700 text-sm leading-relaxed">Quando o cão estiver usando o arnês
+                                        (colete com alça rígida), ele está trabalhando. Evite fazer carinho, assoviar,
+                                        chamar ou oferecer alimentos sem autorização expressa do tutor.</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 11. FAQ SECTION -->
+                        <section id="sec-faq" class="spa-section hidden space-y-8" aria-labelledby="faq-heading">
+                            <div class="text-center max-w-2xl mx-auto space-y-2">
+                                <h2 id="faq-heading" class="text-3xl font-bold text-gray-900">Perguntas Frequentes (FAQ)
+                                </h2>
+                                <p class="text-gray-700">Tire suas dúvidas sobre o processo de solicitação, custos e
+                                    treinamento.</p>
+                            </div>
+
+                            <div class="max-w-3xl mx-auto space-y-4">
+                                <details class="glass-card p-5 rounded-2xl cursor-pointer group border border-gray-200">
+                                    <summary class="font-bold text-gray-900 flex justify-between items-center">
+                                        <span>O cão-guia tem algum custo para o beneficiário?</span>
+                                        <i class="fa-solid fa-chevron-down group-open:rotate-180 transition"
+                                            aria-hidden="true"></i>
+                                    </summary>
+                                    <p class="mt-3 text-sm text-gray-700 leading-relaxed">Não. Todos os cães-guias
+                                        formados pelo Instituto Federal Goiano são entregues de forma inteiramente
+                                        gratuita às pessoas selecionadas.</p>
+                                </details>
+
+                                <details class="glass-card p-5 rounded-2xl cursor-pointer group border border-gray-200">
+                                    <summary class="font-bold text-gray-900 flex justify-between items-center">
+                                        <span>Quanto tempo dura o treinamento completo de um cão-guia?</span>
+                                        <i class="fa-solid fa-chevron-down group-open:rotate-180 transition"
+                                            aria-hidden="true"></i>
+                                    </summary>
+                                    <p class="mt-3 text-sm text-gray-700 leading-relaxed">O processo completo dura em
+                                        média de 18 a 24 meses, divididos entre acolhimento familiar para socialização e
+                                        instrução técnica especializada.</p>
+                                </details>
+
+                                <details class="glass-card p-5 rounded-2xl cursor-pointer group border border-gray-200">
+                                    <summary class="font-bold text-gray-900 flex justify-between items-center">
+                                        <span>Como funciona o suporte para pessoas daltônicas e com baixa visão neste
+                                            portal?</span>
+                                        <i class="fa-solid fa-chevron-down group-open:rotate-180 transition"
+                                            aria-hidden="true"></i>
+                                    </summary>
+                                    <p class="mt-3 text-sm text-gray-700 leading-relaxed">Clicando no botão
+                                        "Acessibilidade & Daltonismo" no canto inferior esquerdo (ou pressionando Alt +
+                                        A), você pode ativar filtros calibrados para Protanopia, Deuteranopia,
+                                        Tritanopia e Acromatopsia, além de leitor de voz em português, régua guia de
+                                        leitura e alto contraste.</p>
+                                </details>
+                            </div>
+                        </section>
+
+                        <!-- 12. CONTATO SECTION -->
+                        <section id="sec-contato" class="spa-section hidden space-y-8"
+                            aria-labelledby="contato-heading">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="space-y-6">
+                                    <h2 id="contato-heading" class="text-3xl font-bold text-gray-900">Fale Conosco</h2>
+                                    <p class="text-gray-700">Entre em contato para parcerias institucionais, imprensa,
+                                        dúvidas ou suporte acessível.</p>
+
+                                    <div class="space-y-4">
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center">
+                                                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                                            </div>
+                                            <span
+                                                class="text-sm font-medium text-gray-800">contato@caoguia.ifgoiano.edu.br</span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center">
+                                                <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-800">(64) 99999-9999</span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <div
+                                                class="w-10 h-10 bg-brand-100 text-brand-700 rounded-xl flex items-center justify-center">
+                                                <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                                            </div>
+                                            <span class="text-sm font-medium text-gray-800">Instituto Federal Goiano -
+                                                Goiás</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <form
+                                    onsubmit="handleFormSubmit(event, 'Mensagem enviada com sucesso! Responderemos em breve.')"
+                                    class="glass-card p-6 rounded-3xl space-y-4 shadow-md border border-gray-200">
+                                    <div>
+                                        <label for="con-nome" class="block text-xs font-bold text-gray-700 mb-1">Seu
+                                            Nome *</label>
+                                        <input id="con-nome" type="text" required
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="con-email" class="block text-xs font-bold text-gray-700 mb-1">Seu
+                                            E-mail *</label>
+                                        <input id="con-email" type="email" required
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="con-assunto"
+                                            class="block text-xs font-bold text-gray-700 mb-1">Assunto *</label>
+                                        <select id="con-assunto"
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm bg-white">
+                                            <option>Dúvidas sobre Solicitação de Cão Guia</option>
+                                            <option>Quero ser Família Acolhedora</option>
+                                            <option>Parceria Institucional / Imprensa</option>
+                                            <option>Sugestão de Acessibilidade</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label for="con-msg" class="block text-xs font-bold text-gray-700 mb-1">Mensagem
+                                            *</label>
+                                        <textarea id="con-msg" rows="4" required
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm"></textarea>
+                                    </div>
+                                    <button type="submit"
+                                        class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold p-3.5 rounded-xl transition shadow-md text-sm">
+                                        Enviar Mensagem
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+
+                        <!-- 13. LOGIN SECTION -->
+                        <section id="sec-login" class="spa-section hidden" aria-labelledby="login-heading">
+                            <div
+                                class="max-w-md mx-auto glass-card p-8 rounded-3xl shadow-xl space-y-6 border border-gray-200">
+                                <div class="text-center space-y-2">
+                                    <i class="fa-solid fa-paw text-brand-600 text-3xl" aria-hidden="true"></i>
+                                    <h2 id="login-heading" class="text-2xl font-bold text-gray-900">Acesse sua Conta
+                                    </h2>
+                                    <p class="text-xs text-gray-600">Área restrita a voluntários, famílias acolhedoras e
+                                        beneficiários</p>
+                                </div>
+
+                                <form onsubmit="handleFormSubmit(event, 'Autenticação realizada com sucesso!')"
+                                    class="space-y-4">
+                                    <div>
+                                        <label for="log-user" class="block text-xs font-bold text-gray-700 mb-1">E-mail
+                                            ou CPF *</label>
+                                        <input id="log-user" type="text" required
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <div>
+                                        <label for="log-pass" class="block text-xs font-bold text-gray-700 mb-1">Senha
+                                            *</label>
+                                        <input id="log-pass" type="password" required
+                                            class="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-brand-500 outline-none text-sm">
+                                    </div>
+                                    <button type="submit"
+                                        class="w-full bg-brand-600 hover:bg-brand-700 text-white font-bold py-3.5 rounded-xl transition shadow-md text-sm">
+                                        Entrar no Portal
+                                    </button>
+                                </form>
+                            </div>
+                        </section>
+
+                    </main>
+
+                    <!-- MODAL DE LEITURA COMPLETA DE NOTÍCIA -->
+                    <div id="newsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
+                        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+                        <div
+                            class="glass-card max-w-2xl w-full p-6 sm:p-8 rounded-3xl shadow-2xl relative space-y-4 max-h-[90vh] overflow-y-auto border border-gray-200">
+                            <button onclick="closeNewsModal()" aria-label="Fechar janela de notícia"
+                                class="absolute top-6 right-6 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-700 transition">
+                                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+                            </button>
+                            <span id="modalDate" class="text-xs font-bold text-brand-700 uppercase block"></span>
+                            <h3 id="modalTitle" class="text-2xl font-bold text-gray-900 pr-8"></h3>
+                            <p id="modalBody"
+                                class="text-gray-700 text-sm leading-relaxed pt-3 border-t border-gray-200"></p>
+                            <div class="pt-3 flex justify-end">
+                                <button
+                                    onclick="speakText(document.getElementById('modalTitle').innerText + '. ' + document.getElementById('modalBody').innerText)"
+                                    class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
+                                    <i class="fa-solid fa-volume-high" aria-hidden="true"></i> Ouvir Notícia
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- FAIXA DE PATINHAS DECORATIVAS ACIMA DO RODAPÉ -->
+                    <div class="w-full overflow-hidden py-4 text-brand-600/30 flex justify-between gap-6 select-none"
+                        aria-hidden="true">
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                        <i class="fa-solid fa-paw text-xl"></i>
+                    </div>
+
+                    <!-- RODAPÉ -->
+                    <footer class="bg-brand-900 text-white pt-12 pb-8 z-10">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 pb-8 border-b border-brand-800">
+                                <div class="space-y-3">
+                                    <div class="flex items-center gap-3">
+                                        <i class="fa-solid fa-paw text-brand-500 text-2xl" aria-hidden="true"></i>
+                                        <div>
+                                            <span class="font-extrabold text-lg block leading-none">Cão Guia
+                                                Digital</span>
+                                            <span class="text-xs text-brand-200 font-semibold uppercase">IF
+                                                Goiano</span>
+                                        </div>
+                                    </div>
+                                    <p class="text-xs text-brand-100 leading-relaxed">
+                                        Iniciativa dedicada à formação de cães-guias, acessibilidade digital e promoção
+                                        da inclusão social.
+                                    </p>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-sm text-brand-100 mb-3">Links Rápidos</h4>
+                                    <ul class="space-y-2 text-xs text-brand-100">
+                                        <li><a href="#" onclick="navigateTo('solicitar-cao'); return false;"
+                                                class="hover:text-white transition font-medium">Solicitar Cão Guia</a>
+                                        </li>
+                                        <li><a href="#" onclick="navigateTo('processo'); return false;"
+                                                class="hover:text-white transition">Processo de Treinamento</a></li>
+                                        <li><a href="#" onclick="navigateTo('noticias'); return false;"
+                                                class="hover:text-white transition">Notícias e Artigos</a></li>
+                                        <li><a href="#" onclick="navigateTo('programa'); return false;"
+                                                class="hover:text-white transition">O Programa</a></li>
+                                        <li><a href="#" onclick="navigateTo('caes'); return false;"
+                                                class="hover:text-white transition">Cães Guias</a></li>
+                                        <li><a href="#" onclick="navigateTo('faq'); return false;"
+                                                class="hover:text-white transition">FAQ</a></li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h4 class="font-bold text-sm text-brand-100 mb-3">Contato & Suporte</h4>
+                                    <p class="text-xs text-brand-100 leading-relaxed">
+                                        Instituto Federal Goiano<br>
+                                        E-mail: contato@caoguia.ifgoiano.edu.br
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="text-center text-xs text-brand-100">
+                                &copy; 2026 Cão Guia Digital - Instituto Federal Goiano. Todos os direitos reservados.
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+
+                <!-- MENSAGEM TOAST ACESSÍVEL (Substitui alert() bloqueado) -->
+                <div id="toastNotification" role="status" aria-live="assertive"
+                    class="fixed top-24 right-5 z-[70] max-w-sm bg-gray-900 text-white px-5 py-4 rounded-2xl shadow-2xl border-2 border-brand-500 flex items-center gap-3 transform translate-x-[130%] transition-transform duration-300">
+                    <i class="fa-solid fa-circle-check text-brand-400 text-xl shrink-0"></i>
+                    <p id="toastMessage" class="text-xs font-semibold leading-relaxed"></p>
+                </div>
+
+                <!-- =========================================================
+         JAVASCRIPT: SPA, LEITOR DE VOZ, DALTONISMO & PERSISTÊNCIA
+         ========================================================= -->
+                <script>
+                    // --- 1. NAVEGAÇÃO SPA ACESSÍVEL ---
+                    function navigateTo(sectionId) {
+                        document.querySelectorAll('.spa-section').forEach(sec => sec.classList.add('hidden'));
+                        const target = document.getElementById(`sec-${sectionId}`);
+                        if (target) {
+                            target.classList.remove('hidden');
+                            window.scrollTo({ top: 0, behavior: document.body.classList.contains('reduce-motion') ? 'auto' : 'smooth' });
+                            const heading = target.querySelector('h1, h2');
+                            if (heading) {
+                                announceScreenReader(`Navegou para: ${heading.innerText}`);
+                            }
+                        }
+                        closeSidebarMenu();
+                    }
+
+                    function announceScreenReader(msg) {
+                        const announcer = document.getElementById('ariaLiveAnnouncer');
+                        if (announcer) {
+                            announcer.textContent = '';
+                            setTimeout(() => { announcer.textContent = msg; }, 50);
+                        }
+                    }
+
+                    function showToast(message) {
+                        const toast = document.getElementById('toastNotification');
+                        const toastMsg = document.getElementById('toastMessage');
+                        toastMsg.innerText = message;
+                        toast.classList.remove('translate-x-[130%]');
+                        announceScreenReader(message);
+                        setTimeout(() => {
+                            toast.classList.add('translate-x-[130%]');
+                        }, 4500);
+                    }
+
+                    // --- 2. CONTROLE DO MENU HAMBÚRGUER LATERAL ---
+                    function toggleSidebarMenu() {
+                        const sidebar = document.getElementById('sidebarMenu');
+                        const overlay = document.getElementById('sidebarOverlay');
+                        const btn = document.getElementById('hamburgerBtn');
+                        const isOpened = !sidebar.classList.contains('translate-x-full');
+
+                        if (isOpened) {
+                            closeSidebarMenu();
+                        } else {
+                            sidebar.classList.remove('translate-x-full');
+                            overlay.classList.remove('opacity-0', 'pointer-events-none');
+                            btn.setAttribute('aria-expanded', 'true');
+                        }
+                    }
+
+                    function closeSidebarMenu() {
+                        const sidebar = document.getElementById('sidebarMenu');
+                        const overlay = document.getElementById('sidebarOverlay');
+                        const btn = document.getElementById('hamburgerBtn');
+                        sidebar.classList.add('translate-x-full');
+                        overlay.classList.add('opacity-0', 'pointer-events-none');
+                        if (btn) btn.setAttribute('aria-expanded', 'false');
+                    }
+
+                    // --- 3. FILTRO E MODAL DE NOTÍCIAS ---
+                    function filterNews() {
+                        const query = document.getElementById('newsSearch').value.toLowerCase();
+                        const cards = document.querySelectorAll('.news-card');
+                        cards.forEach(card => {
+                            const title = card.querySelector('.news-title').innerText.toLowerCase();
+                            card.classList.toggle('hidden', !title.includes(query));
+                        });
+                    }
+
+                    function openNewsModal(title, body, date) {
+                        document.getElementById('modalTitle').innerText = title;
+                        document.getElementById('modalBody').innerText = body;
+                        document.getElementById('modalDate').innerText = date;
+                        const modal = document.getElementById('newsModal');
+                        modal.classList.remove('opacity-0', 'pointer-events-none');
+                    }
+
+                    function closeNewsModal() {
+                        const modal = document.getElementById('newsModal');
+                        modal.classList.add('opacity-0', 'pointer-events-none');
+                    }
+
+                    // --- 4. LEITOR DE VOZ AVANÇADO (WEB SPEECH API) ---
+                    const synth = window.speechSynthesis;
+                    let speechRate = 1.0;
+                    let highlightedElement = null;
+                    let hoverSpeechEnabled = false;
+
+                    function clearHighlight() {
+                        if (highlightedElement) {
+                            highlightedElement.classList.remove('reader-highlight');
+                            highlightedElement = null;
+                        }
+                    }
+
+                    function speakText(text, targetEl = null) {
+                        if (!synth) return;
+                        synth.cancel();
+                        clearHighlight();
+                        if (!text || !text.trim()) return;
+
+                        if (targetEl) {
+                            highlightedElement = targetEl;
+                            highlightedElement.classList.add('reader-highlight');
+                        }
+
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'pt-BR';
+                        utterance.rate = speechRate;
+                        utterance.onend = () => clearHighlight();
+                        utterance.onerror = () => clearHighlight();
+                        synth.speak(utterance);
+                    }
+
+                    function togglePauseSpeech() {
+                        if (!synth) return;
+                        const btn = document.getElementById('pauseResumeBtn');
+                        if (synth.speaking && !synth.paused) {
+                            synth.pause();
+                            btn.innerHTML = '<i class="fa-solid fa-play"></i> Retomar';
+                        } else if (synth.paused) {
+                            synth.resume();
+                            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pausar';
+                        }
+                    }
+
+                    function stopSpeech() {
+                        if (synth) synth.cancel();
+                        clearHighlight();
+                        const btn = document.getElementById('pauseResumeBtn');
+                        if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i><br><span>Pausar</span>';
+                    }
+
+                    function speakCurrentPage() {
+                        const activeSection = document.querySelector('.spa-section:not(.hidden)');
+                        if (activeSection) {
+                            speakText(activeSection.innerText, activeSection);
+                        }
+                    }
+
+                    function setSpeechRate(rate) {
+                        speechRate = rate;
+                        ['0.8', '1.0', '1.3'].forEach(r => {
+                            const btn = document.getElementById(`rate-${r}`);
+                            if (btn) {
+                                btn.classList.remove('bg-brand-600', 'text-white', 'font-bold');
+                                btn.classList.add('bg-gray-100', 'text-gray-700', 'font-medium');
+                            }
+                        });
+                        const activeBtn = document.getElementById(`rate-${rate.toFixed(1)}`);
+                        if (activeBtn) {
+                            activeBtn.classList.remove('bg-gray-100', 'text-gray-700', 'font-medium');
+                            activeBtn.classList.add('bg-brand-600', 'text-white', 'font-bold');
+                        }
+                        saveAccessibilityPrefs();
+                        showToast(`Velocidade da voz alterada para ${rate}x`);
+                    }
+
+                    function toggleHoverSpeech(btnEl) {
+                        hoverSpeechEnabled = !hoverSpeechEnabled;
+                        if (btnEl) btnEl.classList.toggle('active', hoverSpeechEnabled);
+                        showToast(hoverSpeechEnabled ? 'Leitura ao apontar ativada.' : 'Leitura ao apontar desativada.');
+                        saveAccessibilityPrefs();
+                    }
+
+                    // Leitura ao passar o mouse ou focar com Tab
+                    function handleAutoReadEvent(e) {
+                        if (hoverSpeechEnabled) {
+                            const target = e.target.closest('p, h1, h2, h3, button, a, summary, label, li');
+                            if (target && target.innerText && !target.closest('#accessibilityPanel')) {
+                                speakText(target.innerText, target);
+                            }
+                        }
+                    }
+                    document.addEventListener('mouseover', handleAutoReadEvent);
+                    document.addEventListener('focusin', handleAutoReadEvent);
+
+                    // --- 5. DALTONISMO, CONTRASTE E TIPOGRAFIA ---
+                    function toggleAccessibilityPanel() {
+                        const panel = document.getElementById('accessibilityPanel');
+                        const btn = document.getElementById('accessibilityMainBtn');
+                        panel.classList.toggle('hidden');
+                        btn.setAttribute('aria-expanded', String(!panel.classList.contains('hidden')));
+                    }
+
+                    const cbLabels = {
+                        none: '',
+                        protanopia: 'Daltonismo: Protanopia',
+                        deuteranopia: 'Daltonismo: Deuteranopia',
+                        tritanopia: 'Daltonismo: Tritanopia',
+                        achromatopsia: 'Daltonismo: Acromatopsia'
+                    };
+
+                    function setColorBlindMode(mode) {
+                        document.body.classList.remove('cb-protanopia', 'cb-deuteranopia', 'cb-tritanopia', 'cb-achromatopsia');
+                        const badge = document.getElementById('activeCbBadge');
+                        const badgeLabel = document.getElementById('activeCbLabel');
+
+                        if (mode && mode !== 'none') {
+                            document.body.classList.add(`cb-${mode}`);
+                            badge.classList.remove('hidden');
+                            badge.classList.add('flex');
+                            badgeLabel.innerText = cbLabels[mode];
+                            showToast(`Modo ${cbLabels[mode]} ativado com indicadores visuais reforçados.`);
+                        } else {
+                            badge.classList.add('hidden');
+                            badge.classList.remove('flex');
+                        }
+                        document.getElementById('colorBlindSelect').value = mode || 'none';
+                        saveAccessibilityPrefs();
+                    }
+
+                    function setContrastMode(mode) {
+                        const isCurrentlyActive = document.body.classList.contains(mode === 'high' ? 'high-contrast' : 'inverted-contrast');
+
+                        document.body.classList.remove('high-contrast', 'inverted-contrast');
+                        document.querySelectorAll('.contrast-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+
+                        if (!isCurrentlyActive && mode !== 'normal') {
+                            if (mode === 'high') {
+                                document.body.classList.add('high-contrast');
+                                const btn = document.getElementById('contrast-high');
+                                if (btn) btn.classList.add('active');
+                                showToast('Modo de Alto Contraste ativado.');
+                            } else if (mode === 'inverted') {
+                                document.body.classList.add('inverted-contrast');
+                                const btn = document.getElementById('contrast-inverted');
+                                if (btn) btn.classList.add('active');
+                                showToast('Modo de Cores Invertidas ativado.');
+                            }
+                        } else {
+                            showToast('Contraste padrão restaurado.');
+                        }
+
+                        saveAccessibilityPrefs();
+                    }
+
+                    let currentFontSize = 100;
+                    function changeFontSize(delta) {
+                        currentFontSize = Math.min(150, Math.max(80, currentFontSize + delta * 10));
+                        document.documentElement.style.fontSize = `${currentFontSize}%`;
+                        showToast(`Tamanho da fonte: ${currentFontSize}%`);
+                        saveAccessibilityPrefs();
+                    }
+
+                    function resetFontSize() {
+                        currentFontSize = 100;
+                        document.documentElement.style.fontSize = '100%';
+                        showToast('Tamanho da fonte restaurado (100%).');
+                        saveAccessibilityPrefs();
+                    }
+
+                    function toggleFeature(className, btnEl, featureName) {
+                        document.body.classList.toggle(className);
+                        const active = document.body.classList.contains(className);
+                        if (btnEl) {
+                            btnEl.classList.toggle('active', active);
+                        }
+                        if (featureName) {
+                            showToast(`${featureName} ${active ? 'ativado(a)' : 'desativado(a)'}.`);
+                        }
+                        saveAccessibilityPrefs();
+                    }
+
+                    // Régua Guia de Leitura Horizontal
+                    let readingGuideActive = false;
+                    function toggleReadingGuide(btnEl) {
+                        readingGuideActive = !readingGuideActive;
+                        const guide = document.getElementById('readingGuide');
+                        guide.classList.toggle('hidden', !readingGuideActive);
+                        if (btnEl) {
+                            btnEl.classList.toggle('active', readingGuideActive);
+                        }
+                        showToast(`Guia de leitura ${readingGuideActive ? 'ativada' : 'desativada'}.`);
+                        saveAccessibilityPrefs();
+                    }
+
+                    document.addEventListener('mousemove', (e) => {
+                        if (readingGuideActive) {
+                            const guide = document.getElementById('readingGuide');
+                            guide.style.top = `${e.clientY - 24}px`;
+                        }
+                    });
+
+                    // Atalhos de Teclado Globais (Alt + A, Alt + L, Esc)
+                    document.addEventListener('keydown', (e) => {
+                        if (e.altKey && e.key.toLowerCase() === 'a') {
+                            e.preventDefault();
+                            toggleAccessibilityPanel();
+                        } else if (e.altKey && e.key.toLowerCase() === 'l') {
+                            e.preventDefault();
+                            speakCurrentPage();
+                        } else if (e.key === 'Escape') {
+                            closeSidebarMenu();
+                            closeNewsModal();
+                            const panel = document.getElementById('accessibilityPanel');
+                            if (!panel.classList.contains('hidden')) toggleAccessibilityPanel();
+                        }
+                    });
+
+                    // --- 6. PERSISTÊNCIA EM LOCALSTORAGE ---
+                    function saveAccessibilityPrefs() {
+                        try {
+                            const prefs = {
+                                colorBlind: document.getElementById('colorBlindSelect').value,
+                                contrast: document.body.classList.contains('high-contrast') ? 'high' : (document.body.classList.contains('inverted-contrast') ? 'inverted' : 'normal'),
+                                fontSize: currentFontSize,
+                                speechRate: speechRate,
+                                hoverSpeech: hoverSpeechEnabled,
+                                readableFont: document.body.classList.contains('readable-font'),
+                                textSpacing: document.body.classList.contains('text-spacing-wide'),
+                                largeCursor: document.body.classList.contains('large-cursor'),
+                                reduceMotion: document.body.classList.contains('reduce-motion'),
+                                highlightLinks: document.body.classList.contains('highlight-links'),
+                                readingGuide: readingGuideActive
+                            };
+                            localStorage.setItem('cgd_a11y_prefs', JSON.stringify(prefs));
+                        } catch (err) { }
+                    }
+
+                    function loadAccessibilityPrefs() {
+                        try {
+                            const raw = localStorage.getItem('cgd_a11y_prefs');
+                            if (!raw) return;
+                            const prefs = JSON.parse(raw);
+
+                            if (prefs.colorBlind) setColorBlindMode(prefs.colorBlind);
+                            if (prefs.contrast) setContrastMode(prefs.contrast);
+                            if (prefs.fontSize) {
+                                currentFontSize = prefs.fontSize;
+                                document.documentElement.style.fontSize = `${currentFontSize}%`;
+                            }
+                            if (prefs.speechRate) setSpeechRate(prefs.speechRate);
+                            if (prefs.hoverSpeech) toggleHoverSpeech(document.getElementById('btn-hover-speech'));
+                            if (prefs.readableFont) toggleFeature('readable-font', document.getElementById('btn-readable-font'));
+                            if (prefs.textSpacing) toggleFeature('text-spacing-wide', document.getElementById('btn-text-spacing-wide'));
+                            if (prefs.largeCursor) toggleFeature('large-cursor', document.getElementById('btn-large-cursor'));
+                            if (prefs.reduceMotion) toggleFeature('reduce-motion', document.getElementById('btn-reduce-motion'));
+                            if (prefs.highlightLinks) toggleFeature('highlight-links', document.getElementById('btn-highlight-links'));
+                            if (prefs.readingGuide) toggleReadingGuide(document.getElementById('btn-reading-guide'));
+                        } catch (err) { }
+                    }
+
+                    function resetAllAccessibility() {
+                        localStorage.removeItem('cgd_a11y_prefs');
+                        setColorBlindMode('none');
+                        document.body.classList.remove('high-contrast', 'inverted-contrast');
+                        document.querySelectorAll('.contrast-btn').forEach(btn => btn.classList.remove('active'));
+
+                        resetFontSize();
+                        setSpeechRate(1.0);
+                        stopSpeech();
+                        hoverSpeechEnabled = false;
+
+                        document.body.classList.remove('readable-font', 'text-spacing-wide', 'large-cursor', 'reduce-motion', 'highlight-links');
+                        document.querySelectorAll('.a11y-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+
+                        readingGuideActive = false;
+                        document.getElementById('readingGuide').classList.add('hidden');
+                        showToast('Todas as configurações de acessibilidade foram restauradas ao padrão.');
+                    }
+
+                    // --- 7. AUXILIARES (PIX E FORMULÁRIOS SEM ALERT BLOQUEADO) ---
+                    function copyPix() {
+                        const pix = document.getElementById('pixKey').innerText;
+                        const tempInput = document.createElement('input');
+                        tempInput.value = pix;
+                        document.body.appendChild(tempInput);
+                        tempInput.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(tempInput);
+                        showToast('Chave Pix copiada para a área de transferência!');
+                    }
+
+                    function handleFormSubmit(e, message) {
+                        e.preventDefault();
+                        showToast(message);
+                        e.target.reset();
+                    }
+
+                    window.addEventListener('DOMContentLoaded', loadAccessibilityPrefs);
+                </script>
+</body>
+
+</html>
