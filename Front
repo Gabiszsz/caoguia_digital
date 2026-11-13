@@ -1804,7 +1804,7 @@
                         }, 4500);
                     }
 
-                    // --- 2. CONTROLE DO MENU HAMBÚRGUER LATERAL ---
+                    //  2. CONTROLE DO MENU HAMBÚRGUER LATERAL 
                     function toggleSidebarMenu() {
                         const sidebar = document.getElementById('sidebarMenu');
                         const overlay = document.getElementById('sidebarOverlay');
