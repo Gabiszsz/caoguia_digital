@@ -252,6 +252,68 @@
             font-size: 1.25rem;
             margin-bottom: 0.15rem;
         }
+
+        /* =========================================================
+   5. ESTILOS EXCLUSIVOS DA SEÇÃO DE NOTÍCIAS (INTEGRAÇÃO API)
+   ========================================================= */
+        .noticia-midia-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 240px;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #1e2b15;
+            cursor: pointer;
+            border: none;
+            padding: 0;
+        }
+
+        .noticia-midia-box.reel-embed-box {
+            height: 340px;
+            background: #ffffff;
+            border: 1px solid #e3ebd9;
+            cursor: default;
+        }
+
+        .noticia-midia-box iframe,
+        .noticia-midia-box img {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .noticia-midia-box img {
+            object-fit: contain;
+        }
+
+        .noticia-legenda {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .noticia-legenda.expandida {
+            display: block;
+            overflow: visible;
+            white-space: pre-line;
+        }
+
+        .texto-audiodescricao {
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .texto-audiodescricao.expandida {
+            display: block;
+            overflow: visible;
+        }
     </style>
 </head>
 
@@ -1124,12 +1186,15 @@
                                 <div>
                                     <span
                                         class="status-badge inline-block px-3 py-1 bg-brand-100 text-brand-800 rounded-full text-xs font-bold uppercase tracking-wider">
-                                        Atualizações & Blog
+                                        Atualizações &amp; Blog
                                     </span>
                                     <h2 id="noticias-heading" class="text-3xl font-extrabold text-gray-900 mt-2">
-                                        Notícias e Artigos</h2>
-                                    <p class="text-gray-700 text-sm">Fique por dentro das novidades, eventos e direitos
-                                        de acessibilidade.</p>
+                                        Notícias e Artigos
+                                    </h2>
+                                    <p class="text-gray-700 text-sm">
+                                        Acompanhe publicações atualizadas do Instagram Oficial e do Portal IF Goiano com
+                                        audiodescrição acessível.
+                                    </p>
                                 </div>
 
                                 <div class="relative w-full md:w-72">
@@ -1142,91 +1207,13 @@
                                 </div>
                             </div>
 
-                            <div id="newsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div id="newsGrid"
+                                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
                                 <article
-                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
-                                    <div class="p-6 space-y-3">
-                                        <div class="flex items-center justify-between text-xs text-gray-600">
-                                            <span
-                                                class="status-badge bg-brand-100 text-brand-800 font-bold px-2.5 py-1 rounded-full">
-                                                <i class="fa-solid fa-universal-access mr-1"
-                                                    aria-hidden="true"></i>Inclusão
-                                            </span>
-                                            <span>15 de Outubro, 2026</span>
-                                        </div>
-                                        <h3 class="news-title text-xl font-bold text-gray-900">
-                                            IF Goiano entrega novo Cão-Guia formado no Campus Urutaí
-                                        </h3>
-                                        <p class="text-gray-700 text-sm leading-relaxed">
-                                            Mais uma dupla concluiu com êxito as etapas de treinamento avançado e
-                                            adaptação urbana, garantindo autonomia plena ao seu tutor.
-                                        </p>
-                                    </div>
-                                    <div class="p-6 pt-0">
-                                        <button
-                                            onclick="openNewsModal('IF Goiano entrega novo Cão-Guia formado no Campus Urutaí', 'A cerimônia marcou a entrega oficial de mais um cão-guia formado integralmente por profissionais e instrutores do IF Goiano. O animal passou por 18 meses de socialização e treino técnico para desvio de obstáculos urbanos e transporte coletivo.', '15 de Outubro, 2026')"
-                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
-                                            <span>Ler Artigo Completo</span>
-                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </article>
-
-                                <article
-                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
-                                    <div class="p-6 space-y-3">
-                                        <div class="flex items-center justify-between text-xs text-gray-600">
-                                            <span
-                                                class="status-badge bg-earth-200 text-earth-600 font-bold px-2.5 py-1 rounded-full">
-                                                <i class="fa-solid fa-scale-balanced mr-1"
-                                                    aria-hidden="true"></i>Direitos
-                                            </span>
-                                            <span>02 de Setembro, 2026</span>
-                                        </div>
-                                        <h3 class="news-title text-xl font-bold text-gray-900">
-                                            Conscientização sobre a Lei do Cão-Guia nos Transportes
-                                        </h3>
-                                        <p class="text-gray-700 text-sm leading-relaxed">
-                                            Ação educativa reforça junto às empresas de transporte coletivo o direito de
-                                            livre acesso garantido pela Lei Federal nº 11.126.
-                                        </p>
-                                    </div>
-                                    <div class="p-6 pt-0">
-                                        <button
-                                            onclick="openNewsModal('Conscientização sobre a Lei do Cão-Guia nos Transportes', 'A equipe do projeto Cão Guia Digital promoveu palestras e distribuiu materiais informativos para motoristas e cobradores sobre a obrigatoriedade de permitir o ingresso do cão-guia sem cobrança de taxas adicionais ou uso de focinheira.', '02 de Setembro, 2026')"
-                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
-                                            <span>Ler Artigo Completo</span>
-                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </article>
-
-                                <article
-                                    class="news-card glass-card rounded-3xl overflow-hidden shadow-md flex flex-col justify-between border border-gray-200">
-                                    <div class="p-6 space-y-3">
-                                        <div class="flex items-center justify-between text-xs text-gray-600">
-                                            <span
-                                                class="status-badge bg-brand-100 text-brand-800 font-bold px-2.5 py-1 rounded-full">
-                                                <i class="fa-solid fa-heart mr-1" aria-hidden="true"></i>Voluntariado
-                                            </span>
-                                            <span>20 de Agosto, 2026</span>
-                                        </div>
-                                        <h3 class="news-title text-xl font-bold text-gray-900">
-                                            Abertas inscrições para novas Famílias Acolhedoras
-                                        </h3>
-                                        <p class="text-gray-700 text-sm leading-relaxed">
-                                            Projeto busca voluntários residentes na região para acolher filhotes de
-                                            Golden Retriever durante o primeiro ano de vida.
-                                        </p>
-                                    </div>
-                                    <div class="p-6 pt-0">
-                                        <button
-                                            onclick="openNewsModal('Abertas inscrições para novas Famílias Acolhedoras', 'Procuramos famílias dispostas a oferecer lar temporário e carinho aos nossos filhotes durante sua fase inicial de socialização. Todos os custos de ração, saúde e acompanhamento veterinário são custeados pelo IF Goiano.', '20 de Agosto, 2026')"
-                                            class="w-full bg-brand-50 hover:bg-brand-100 text-brand-800 font-bold py-2.5 rounded-xl text-sm transition flex items-center justify-center gap-2 border border-brand-200">
-                                            <span>Ler Artigo Completo</span>
-                                            <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
+                                    class="glass-card rounded-3xl p-6 shadow-md border border-brand-200 border-t-4 border-t-brand-600">
+                                    <h3 class="text-lg font-bold text-gray-900">Carregando notícias...</h3>
+                                    <p class="text-gray-700 text-sm mt-2">Buscando publicações atualizadas do Instagram
+                                        e do Portal IF Goiano...</p>
                                 </article>
                             </div>
                         </section>
@@ -1804,7 +1791,7 @@
                         }, 4500);
                     }
 
-                    //  2. CONTROLE DO MENU HAMBÚRGUER LATERAL 
+                    // --- 2. CONTROLE DO MENU HAMBÚRGUER LATERAL ---
                     function toggleSidebarMenu() {
                         const sidebar = document.getElementById('sidebarMenu');
                         const overlay = document.getElementById('sidebarOverlay');
@@ -1829,12 +1816,229 @@
                         if (btn) btn.setAttribute('aria-expanded', 'false');
                     }
 
-                    // --- 3. FILTRO E MODAL DE NOTÍCIAS ---
+                    // --- 3. NOTÍCIAS DINÂMICAS, FILTRO E AUDIODESCRIÇÃO ---
+                    let noticiasCarregadas = [];
+
+                    function carregarNoticiasDinamicas() {
+                        const newsGrid = document.getElementById('newsGrid');
+                        if (!newsGrid) return;
+
+                        fetch('http://localhost:8080/api/noticias?size=30&sort=publicadoEm,desc')
+                            .then(response => {
+                                if (!response.ok) throw new Error('Falha ao buscar notícias da API');
+                                return response.json();
+                            })
+                            .then(pagina => {
+                                let todas = (pagina.content || []).filter(n =>
+                                    n.titulo && !n.titulo.toLowerCase().startsWith('photo by ')
+                                    && (!n.status || n.status === 'PUBLICADO')
+                                );
+
+                                const vistos = new Set();
+                                todas = todas.filter(n => {
+                                    const chave = (n.linkOrigem || n.titulo || '').toLowerCase().trim();
+                                    if (vistos.has(chave)) return false;
+                                    vistos.add(chave);
+                                    return true;
+                                });
+
+                                todas.sort((a, b) => new Date(b.publicadoEm) - new Date(a.publicadoEm));
+                                noticiasCarregadas = todas.slice(0, 6);
+
+                                if (noticiasCarregadas.length === 0) {
+                                    exibirCartoesPadraoNoticias(newsGrid);
+                                    return;
+                                }
+
+                                newsGrid.innerHTML = noticiasCarregadas.map((noticia, index) => {
+                                    const isInstagram = noticia.fonteOrigem === 'INSTAGRAM';
+                                    const isReel = isInstagram && noticia.linkOrigem && noticia.linkOrigem.includes('/reel/');
+                                    const embedUrl = obterEmbedUrlInstagram(noticia.linkOrigem);
+
+                                    const seloFonte = noticia.fonteOrigem === 'IF_GOIANO'
+                                        ? '<i class="fa-solid fa-building-columns mr-1" aria-hidden="true"></i>Portal IF Goiano'
+                                        : '<i class="fa-brands fa-instagram mr-1" aria-hidden="true"></i>Instagram Oficial';
+
+                                    const dataFormatada = formatarDataNoticia(noticia.publicadoEm);
+                                    const tituloLimpo = limparInterrogacoes(noticia.titulo);
+                                    const textoAudio = limparInterrogacoes(noticia.audiodescricaoIA || 'Descrição visual não disponível para esta publicação.');
+                                    const legendaCompleta = limparInterrogacoes(noticia.conteudo || noticia.resumo || '');
+
+                                    const acaoMidia = noticia.linkOrigem ? `onclick="abrirPublicacaoNoticia(${index})"` : '';
+
+                                    let midiaHtml = '';
+                                    if (isReel && embedUrl) {
+                                        midiaHtml = `
+                        <div class="noticia-midia-box reel-embed-box">
+                            <iframe src="${embedUrl}"
+                                title="Vídeo Reel: ${escaparHtmlNoticia(tituloLimpo)}"
+                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                                allowfullscreen
+                                loading="lazy"></iframe>
+                        </div>`;
+                                    } else if (noticia.imagemUrl) {
+                                        midiaHtml = `
+                        <button type="button" ${acaoMidia} class="noticia-midia-box" aria-label="Abrir publicação: ${escaparHtmlNoticia(tituloLimpo)}">
+                            <img src="${noticia.imagemUrl}"
+                                alt="${escaparHtmlNoticia(textoAudio)}"
+                                onerror="substituirPorPlaceholderNoticia(this, ${isInstagram})">
+                        </button>`;
+                                    } else {
+                                        midiaHtml = `
+                        <button type="button" ${acaoMidia} class="noticia-midia-box" aria-label="Abrir publicação: ${escaparHtmlNoticia(tituloLimpo)}">
+                            <div class="w-full h-full bg-gradient-to-br from-brand-800 to-brand-600 flex flex-col items-center justify-center text-white text-center p-5 gap-2">
+                                <i class="fa-solid ${isInstagram ? 'fa-circle-play' : 'fa-building-columns'} text-4xl" aria-hidden="true"></i>
+                                <strong class="text-sm">${isInstagram ? 'Ver no Instagram' : 'Portal IF Goiano'}</strong>
+                                <span class="text-xs opacity-90">${isInstagram ? 'Clique para abrir a publicação oficial' : 'Clique para ler no Portal IF Goiano'}</span>
+                            </div>
+                        </button>`;
+                                    }
+
+                                    return `
+                    <article class="news-card glass-card rounded-3xl p-6 shadow-md flex flex-col border border-brand-200 border-t-4 border-t-brand-600">
+                        <div class="flex items-center justify-between text-xs font-bold text-brand-700 mb-2">
+                            <span class="status-badge bg-brand-100 text-brand-800 px-2.5 py-1 rounded-full">${seloFonte}</span>
+                            <span>${dataFormatada}</span>
+                        </div>
+
+                        <h3 class="news-title text-lg font-bold text-gray-900 leading-snug mb-3 line-clamp-2 min-h-[3rem]" title="${escaparHtmlNoticia(tituloLimpo)}">
+                            ${escaparHtmlNoticia(tituloLimpo)}
+                        </h3>
+
+                        <div class="mb-3">${midiaHtml}</div>
+
+                        <p class="noticia-legenda text-gray-700 text-sm leading-relaxed mb-2" id="legenda-${index}">
+                            ${escaparHtmlNoticia(legendaCompleta)}
+                        </p>
+
+                        <button type="button" id="btn-expandir-${index}" onclick="alternarTextoNoticia(${index})"
+                            class="text-brand-700 hover:text-brand-800 font-bold text-xs underline text-left mb-4 self-start">
+                            Ler texto completo
+                        </button>
+
+                        <div class="bg-brand-50/90 p-3.5 rounded-2xl mt-auto border-l-4 border-brand-600 space-y-2.5">
+                            <strong class="text-brand-800 block text-xs font-bold">
+                                <i class="fa-solid fa-volume-high mr-1" aria-hidden="true"></i>Audiodescrição Automática (IA):
+                            </strong>
+                            <p class="texto-audiodescricao text-gray-800 text-xs leading-relaxed" id="desc-ia-${index}">
+                                ${escaparHtmlNoticia(textoAudio)}
+                            </p>
+                            <div class="flex gap-2 flex-wrap pt-1">
+                                <button type="button" onclick="lerAudiodescricaoNoticia('desc-ia-${index}')"
+                                    class="bg-brand-700 hover:bg-brand-800 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-play" aria-hidden="true"></i> Ouvir Audiodescrição
+                                </button>
+                                <button type="button" onclick="stopSpeech()"
+                                    class="bg-white hover:bg-brand-100 text-brand-800 border border-brand-600 px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-stop" aria-hidden="true"></i> Parar
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-end items-center mt-3 pt-2 border-t border-gray-200/70">
+                            ${noticia.linkOrigem ? `<a href="${noticia.linkOrigem}" target="_blank" rel="noopener noreferrer" class="text-brand-700 hover:text-brand-900 font-bold text-xs hover:underline">${isInstagram ? 'Ver no Instagram ↗' : 'Ler no Portal IF Goiano ↗'}</a>` : ''}
+                        </div>
+                    </article>
+                `;
+                                }).join('');
+                            })
+                            .catch(error => {
+                                console.error('Erro ao conectar com o backend:', error);
+                                exibirCartoesPadraoNoticias(newsGrid);
+                            });
+                    }
+
+                    function obterEmbedUrlInstagram(linkOrigem) {
+                        if (!linkOrigem) return null;
+                        const match = linkOrigem.match(/instagram\.com\/(reel|p)\/([^/?#]+)/i);
+                        if (!match) return null;
+                        return `https://www.instagram.com/${match[1].toLowerCase()}/${match[2]}/embed/`;
+                    }
+
+                    function abrirPublicacaoNoticia(index) {
+                        const noticia = noticiasCarregadas[index];
+                        if (noticia && noticia.linkOrigem) {
+                            window.open(noticia.linkOrigem, '_blank', 'noopener,noreferrer');
+                        }
+                    }
+
+                    function alternarTextoNoticia(index) {
+                        const pLegenda = document.getElementById(`legenda-${index}`);
+                        const pDesc = document.getElementById(`desc-ia-${index}`);
+                        const btn = document.getElementById(`btn-expandir-${index}`);
+                        const expandido = pLegenda.classList.toggle('expandida');
+                        if (pDesc) pDesc.classList.toggle('expandida', expandido);
+                        btn.textContent = expandido ? 'Recolher texto' : 'Ler texto completo';
+                    }
+
+                    function limparInterrogacoes(texto) {
+                        if (!texto) return '';
+                        return texto
+                            .replace(/([!?.])\s*\?+/g, '$1')
+                            .replace(/\s+\?+(?=\s|$)/g, '')
+                            .replace(/\?{2,}/g, '')
+                            .replace(/\s{2,}/g, ' ')
+                            .trim();
+                    }
+
+                    function formatarDataNoticia(isoString) {
+                        if (!isoString) return '';
+                        try {
+                            const data = new Date(isoString);
+                            return data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+                        } catch (e) {
+                            return '';
+                        }
+                    }
+
+                    function substituirPorPlaceholderNoticia(img, isInstagram) {
+                        const box = img.parentElement;
+                        if (!box) return;
+                        box.innerHTML = `
+        <div class="w-full h-full bg-gradient-to-br from-brand-800 to-brand-600 flex flex-col items-center justify-center text-white text-center p-5 gap-2">
+            <i class="fa-solid ${isInstagram ? 'fa-circle-play' : 'fa-building-columns'} text-4xl" aria-hidden="true"></i>
+            <strong class="text-sm">${isInstagram ? 'Ver no Instagram' : 'Portal IF Goiano'}</strong>
+            <span class="text-xs opacity-90">${isInstagram ? 'Clique para abrir a publicação oficial' : 'Clique para ler no Portal IF Goiano'}</span>
+        </div>
+    `;
+                    }
+
+                    function exibirCartoesPadraoNoticias(container) {
+                        container.innerHTML = `
+        <article class="news-card glass-card rounded-3xl p-6 shadow-md border border-brand-200 border-t-4 border-t-brand-600">
+            <h3 class="news-title text-lg font-bold text-gray-900">Respeito durante o trabalho</h3>
+            <p class="text-gray-700 text-sm mt-2">Entenda por que não devemos distrair, alimentar ou tocar em um cão-guia sem autorização de seu usuário.</p>
+        </article>
+        <article class="news-card glass-card rounded-3xl p-6 shadow-md border border-brand-200 border-t-4 border-t-brand-600">
+            <h3 class="news-title text-lg font-bold text-gray-900">Inclusão no dia a dia</h3>
+            <p class="text-gray-700 text-sm mt-2">Conheça atitudes que ajudam a tornar espaços públicos e ambientes sociais mais acessíveis.</p>
+        </article>
+        <article class="news-card glass-card rounded-3xl p-6 shadow-md border border-brand-200 border-t-4 border-t-brand-600">
+            <h3 class="news-title text-lg font-bold text-gray-900">Sincronização pendente</h3>
+            <p class="text-gray-700 text-sm mt-2">Inicie o backend Spring Boot na porta 8080 para carregar as notícias do Instagram e do Portal IF Goiano.</p>
+        </article>
+    `;
+                    }
+
+                    function escaparHtmlNoticia(texto) {
+                        if (!texto) return '';
+                        const div = document.createElement('div');
+                        div.textContent = texto;
+                        return div.innerHTML;
+                    }
+
+                    function lerAudiodescricaoNoticia(idAudioDesc) {
+                        const el = document.getElementById(idAudioDesc);
+                        if (!el) return;
+                        speakText(el.innerText, el);
+                    }
+
                     function filterNews() {
                         const query = document.getElementById('newsSearch').value.toLowerCase();
                         const cards = document.querySelectorAll('.news-card');
                         cards.forEach(card => {
-                            const title = card.querySelector('.news-title').innerText.toLowerCase();
+                            const titleEl = card.querySelector('.news-title');
+                            const title = titleEl ? titleEl.innerText.toLowerCase() : '';
                             card.classList.toggle('hidden', !title.includes(query));
                         });
                     }
@@ -1851,6 +2055,8 @@
                         const modal = document.getElementById('newsModal');
                         modal.classList.add('opacity-0', 'pointer-events-none');
                     }
+
+                    window.addEventListener('DOMContentLoaded', carregarNoticiasDinamicas);
 
                     // --- 4. LEITOR DE VOZ AVANÇADO (WEB SPEECH API) ---
                     const synth = window.speechSynthesis;
