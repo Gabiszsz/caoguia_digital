@@ -18,12 +18,13 @@ public class Noticia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String titulo;
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String conteudo;
 
+    @Column(length = 1000)
     private String resumo;
 
     @Column(nullable = false)
@@ -43,7 +44,7 @@ public class Noticia {
     @Column(length = 1000)
     private String imagemUrl;
 
-    @Column(unique = true, length = 500)
+    @Column(unique = true, length = 1500)
     private String linkOrigem;
 
     @Column(length = 50)

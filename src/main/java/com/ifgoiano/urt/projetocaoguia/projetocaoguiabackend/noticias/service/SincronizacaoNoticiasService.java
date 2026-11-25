@@ -55,17 +55,18 @@ public class SincronizacaoNoticiasService {
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36";
 
     private static final List<String> FONTES_IF = List.of(
+            "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword=c%C3%A3o-guia&ordering=newest&searchphrase=all",
+            "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword=c%C3%A3o+guia&ordering=newest&searchphrase=all",
             "https://www.ifgoiano.edu.br/home/index.php/busca.html?searchword=c%C3%A3o-guia&searchphrase=all&ordering=newest",
-            "https://www.ifgoiano.edu.br/home/index.php/busca.html?searchword=c%C3%A3o-guia&searchphrase=all&ordering=newest&start=10",
             "https://www.ifgoiano.edu.br/home/index.php/busca.html?searchword=c%C3%A3o+guia&searchphrase=all&ordering=newest",
             "https://www.ifgoiano.edu.br/home/index.php/component/finder/search?q=c%C3%A3o-guia",
             "https://www.ifgoiano.edu.br/home/index.php/ultimas-noticias-urutai"
     );
 
     private static final List<String> FONTES_RSS_OFICIAL = List.of(
-            "https://news.google.com/rss/search?q=site:ifgoiano.edu.br+(%22c%C3%A3o-guia%22+OR+%22c%C3%A3o+guia%22+OR+%22c%C3%A3es-guia%22+OR+%22c%C3%A3es+guia%22)+when:2y&hl=pt-BR&gl=BR&ceid=BR:pt-419",
             "https://www.bing.com/news/search?q=site%3Aifgoiano.edu.br+%22c%C3%A3o-guia%22&format=rss",
-            "https://www.bing.com/news/search?q=site%3Aifgoiano.edu.br+%22c%C3%A3o+guia%22&format=rss"
+            "https://www.bing.com/news/search?q=site%3Aifgoiano.edu.br+%22c%C3%A3o+guia%22&format=rss",
+            "https://news.google.com/rss/search?q=site:ifgoiano.edu.br+(%22c%C3%A3o-guia%22+OR+%22c%C3%A3o+guia%22+OR+%22c%C3%A3es-guia%22+OR+%22c%C3%A3es+guia%22)+when:2y&hl=pt-BR&gl=BR&ceid=BR:pt-419"
     );
 
     private static final Map<String, Integer> MESES_PT = Map.ofEntries(
@@ -107,12 +108,17 @@ public class SincronizacaoNoticiasService {
         for (Noticia n : todas) {
             String titulo = n.getTitulo() != null ? n.getTitulo().toLowerCase() : "";
             String conteudo = n.getConteudo() != null ? n.getConteudo().toLowerCase() : "";
+            String link = n.getLinkOrigem() != null ? n.getLinkOrigem() : "";
+
+            boolean linkGoogleTruncado = link.contains("news.google.com/rss/articles/");
             boolean isAgendaOuAntiga = titulo.startsWith("atendimento no campus")
                     || titulo.startsWith("participação em evento de entrega")
                     || titulo.startsWith("photo by ")
                     || titulo.contains("likes,")
                     || conteudo.contains("de 2019") || conteudo.contains("de 2021")
-                    || conteudo.contains("de 2023");
+                    || conteudo.contains("de 2023")
+                    || linkGoogleTruncado;
+
             if (isAgendaOuAntiga) {
                 noticiaRepository.delete(n);
             } else {
@@ -178,8 +184,8 @@ public class SincronizacaoNoticiasService {
                 }
 
                 String tituloLimpo = limparTexto(limparTituloIF(item.titulo));
-                if (tituloLimpo.length() > 240) {
-                    tituloLimpo = tituloLimpo.substring(0, 237) + "...";
+                if (tituloLimpo.length() > 450) {
+                    tituloLimpo = tituloLimpo.substring(0, 447) + "...";
                 }
                 String chaveTitulo = tituloLimpo.toLowerCase().replaceAll("[^a-z0-9áéíóúâêôãõç]", "");
                 if (chaveTitulo.isBlank() || titulosVistos.contains(chaveTitulo)) {
@@ -192,11 +198,11 @@ public class SincronizacaoNoticiasService {
                         ? "Matéria publicada no portal oficial do Instituto Federal Goiano sobre o Programa Cão-Guia."
                         : limparTexto(item.resumo);
 
-                String linkSeguro = item.link != null && item.link.length() > 250
-                        ? item.link.substring(0, 250)
+                String linkSeguro = item.link != null && item.link.length() > 1450
+                        ? item.link.substring(0, 1450)
                         : item.link;
 
-                String imgSegura = item.imagemUrl != null && item.imagemUrl.length() > 250
+                String imgSegura = item.imagemUrl != null && item.imagemUrl.length() > 950
                         ? null
                         : item.imagemUrl;
 
@@ -245,7 +251,7 @@ public class SincronizacaoNoticiasService {
                             contexto.append(" ").append(irmao.text());
                         }
                     }
-                    Element bloco = a.closest("li, .result-item, article, div.tileItem");
+                    Element bloco = a.closest("li, .result-item, article, div.tileItem, dt.result-title");
                     if (bloco != null) {
                         contexto.append(" ").append(bloco.text());
                     }
@@ -310,6 +316,13 @@ public class SincronizacaoNoticiasService {
                     }
 
                     enriquecerComPaginaIF(model);
+
+                    if (!model.link.toLowerCase().contains("ifgoiano.edu.br")
+                            && model.link.contains("news.google.com/rss/articles/")) {
+                        model.link = "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword="
+                                + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8);
+                    }
+
                     coletadas.putIfAbsent(model.link, model);
                 }
             } catch (IOException e) {
@@ -323,15 +336,27 @@ public class SincronizacaoNoticiasService {
             String urlAlvo = model.link;
 
             if (!urlAlvo.toLowerCase().contains("ifgoiano.edu.br")) {
-                String buscaTitulo = "https://www.ifgoiano.edu.br/home/index.php/component/finder/search?q="
-                        + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8);
-                Document docBusca = conectarPortal(buscaTitulo).timeout(8000).get();
+                List<String> urlsBusca = List.of(
+                        "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword="
+                                + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8) + "&ordering=newest&searchphrase=all",
+                        "https://www.ifgoiano.edu.br/home/index.php/component/finder/search?q="
+                                + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8)
+                );
 
-                for (Element a : docBusca.select("a[href]")) {
-                    String cand = limparUrl(a.attr("abs:href"));
-                    if (isLinkValidoNoticiaIF(cand) && contemTermoProjeto(a.text())) {
-                        urlAlvo = cand;
-                        break;
+                for (String urlBusca : urlsBusca) {
+                    try {
+                        Document docBusca = conectarPortal(urlBusca).timeout(8000).get();
+                        for (Element a : docBusca.select("a[href]")) {
+                            String cand = limparUrl(a.attr("abs:href"));
+                            if (isLinkValidoNoticiaIF(cand) && isMesmaNoticia(model.titulo, a.text(), 0.45)) {
+                                urlAlvo = cand;
+                                break;
+                            }
+                        }
+                        if (urlAlvo.toLowerCase().contains("ifgoiano.edu.br")) {
+                            break;
+                        }
+                    } catch (IOException ignored) {
                     }
                 }
             }
