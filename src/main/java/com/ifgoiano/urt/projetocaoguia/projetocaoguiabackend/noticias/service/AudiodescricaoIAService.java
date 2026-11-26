@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class AudiodescricaoIAService {
@@ -30,14 +31,25 @@ public class AudiodescricaoIAService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    // Cache em memória RAM: guarda as audiodescrições já geradas por URL da imagem
+    private static final Map<String, String> CACHE_AUDIODESCRICAO = new ConcurrentHashMap<>();
+
     @SuppressWarnings("unchecked")
     public String gerarAudiodescricao(String imagemUrl, String contextoTexto) {
         if (imagemUrl == null || imagemUrl.isBlank()) {
             return gerarFallbackAcessivel(contextoTexto);
         }
 
+        String chaveCache = imagemUrl.trim();
+
+        // 1. Se já gerou essa imagem antes, devolve instantaneamente sem gastar cota do Gemini
+        if (CACHE_AUDIODESCRICAO.containsKey(chaveCache)) {
+            System.out.println("[Audiodescrição IA] Retornando do cache (0 requisições gastas): " + chaveCache);
+            return CACHE_AUDIODESCRICAO.get(chaveCache);
+        }
+
         try {
-            byte[] imageBytes = baixarImagem(imagemUrl);
+            byte[] imageBytes = baixarImagem(chaveCache);
             if (imageBytes == null || imageBytes.length == 0) {
                 return gerarFallbackAcessivel(contextoTexto);
             }
@@ -83,6 +95,9 @@ public class AudiodescricaoIAService {
                                     if (firstPart.containsKey("text")) {
                                         String textoGerado = firstPart.get("text").toString().trim();
                                         if (!textoGerado.isBlank()) {
+                                            // 2. Salva no cache para nunca mais precisar chamar a API para esta foto
+                                            CACHE_AUDIODESCRICAO.put(chaveCache, textoGerado);
+                                            System.out.println("[Audiodescrição IA] Gerado pela API e salvo no cache: " + chaveCache);
                                             Thread.sleep(4500);
                                             return textoGerado;
                                         }
@@ -103,6 +118,7 @@ public class AudiodescricaoIAService {
         } catch (Exception ignored) {
         }
 
+        // 3. Fallback seguro caso a cota estoure ou ocorra falha de rede (não salva fallback no cache para tentar de novo depois se precisar)
         return gerarFallbackAcessivel(contextoTexto);
     }
 
