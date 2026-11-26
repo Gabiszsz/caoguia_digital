@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR" data-contrast="normal">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Assistente informativo acessível do projeto Cão-Guia Digital, com respostas baseadas em documentos consultados.">
+  <title>Assistente acessível | Cão-Guia Digital</title>
+  <link rel="stylesheet" href="/static/styles.css?v=2.6">
+  <script src="/static/app.js?v=2.6" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#question">Ir diretamente para o campo de pergunta</a>
+  <div class="site-shell">
+    <header class="top-bar" aria-label="Cabeçalho do Cão-Guia Digital">
+      <div class="brand-group">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" fill="none" focusable="false">
+            <path d="M18 14.5c-3.7-3.3-8.8-.6-8.8 4.1 0 3.3 2.4 5.4 6 5.5M30 14.5c3.7-3.3 8.8-.6 8.8 4.1 0 3.3-2.4 5.4-6 5.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M13 19.5c0-6.6 4.6-10.7 11-10.7s11 4.1 11 10.7v10.4c0 6-4.3 10.2-11 10.2S13 35.9 13 29.9V19.5Z" stroke="currentColor" stroke-width="3.5"/>
+            <path d="M20 27h.1m7.9 0h.1" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+            <path d="M20 32c2.2 2.1 5.8 2.1 8 0" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <p class="brand-name">Cão-Guia Digital</p>
+          <p class="brand-subtitle">IF Goiano · Campus Urutaí</p>
+        </div>
+      </div>
+      <div class="brand-note" aria-label="Projeto acadêmico">
+        <span class="note-dot" aria-hidden="true"></span>
+        Assistente do projeto
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="side-panel" aria-labelledby="sidebarTitle">
+        <div class="side-top">
+          <div class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span> ACESSIBILIDADE EM PRIMEIRO LUGAR</div>
+          <h2 id="sidebarTitle">Informação para todos.</h2>
+          <p>Converse sobre o Cão-Guia Digital utilizando linguagem natural, teclado ou leitor de tela.</p>
+        </div>
+        <section class="info-box" aria-label="Como o assistente responde">
+          <div class="info-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 3.5 7.2v5.2c0 5.2 3.3 8.3 8.5 9.6 5.2-1.3 8.5-4.4 8.5-9.6V7.2L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m8.4 12.2 2.3 2.2 4.9-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h3>Respostas fundamentadas</h3>
+            <p>O assistente procura trechos em documentos selecionados e informa quando não encontra a resposta.</p>
+          </div>
+        </section>
+        <section class="examples" aria-labelledby="examplesTitle">
+          <h3 id="examplesTitle">Experimente perguntar</h3>
+          <div class="example-list">
+            <button class="example-button" type="button" data-question="Qual é o objetivo do Programa Cão-Guia do IF Goiano?">
+              <span>Qual é o objetivo do programa?</span><span aria-hidden="true">↗</span>
+            </button>
+            <button class="example-button" type="button" data-question="Como faço para me inscrever para receber um cão-guia?">
+              <span>Como funciona a inscrição?</span><span aria-hidden="true">↗</span>
+            </button>
+            <button class="example-button" type="button" data-question="Como funciona o trabalho de uma família socializadora?">
+              <span>O que faz uma família socializadora?</span><span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </section>
+        <details class="how-to">
+          <summary>Orientações de acessibilidade</summary>
+          <p>Use a tecla Tab para navegar entre os controles e Enter ou Espaço para ativar botões. No campo de pergunta, Enter envia e Shift+Enter quebra a linha.</p>
+          <p>O assistente anuncia a resposta em uma região acessível a leitores de tela. Também há leitura por voz opcional, independente do leitor de tela.</p>
+          <p>Atalho: Alt+Q coloca o foco no campo de pergunta, quando disponível no navegador.</p>
+        </details>
+        <p class="side-foot">As informações sobre inscrições podem mudar. Confira sempre o edital oficial do IF Goiano. Este chatbot não substitui a equipe do programa.</p>
+      </aside>
+
+      <main class="chat-panel" id="conteudo">
+        <div class="chat-heading">
+          <div class="chat-heading-copy">
+            <div class="eyebrow second">CONVERSA ASSISTIDA POR IA</div>
+            <h1>Como posso ajudar?</h1>
+            <p>Tire dúvidas sobre o Programa Cão-Guia e o projeto digital.</p>
+          </div>
+          <div id="serviceIndicator" class="service-state checking" role="status" aria-live="polite" aria-atomic="true">Verificando sistema</div>
+        </div>
+
+        <section class="toolbar" aria-label="Preferências de acessibilidade">
+          <button id="contrastButton" class="tool-button text-tool" type="button" aria-pressed="false" aria-label="Ativar alto contraste">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17Z" fill="currentColor"/></svg>
+            <span>Alto contraste</span>
+          </button>
+          <button id="autoReadButton" class="tool-button text-tool" type="button" aria-pressed="false" aria-label="Ativar leitura automática das respostas">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"><path d="m4 9 4-3h3v12H8l-4-3V9Zm11-1c2 1 3 2.4 3 4s-1 3-3 4m2-11c3 1.3 5 3.8 5 7s-2 5.7-5 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Leitura automática</span>
+          </button>
+          <button id="clearButton" class="tool-button text-tool reset-chat" type="button" aria-label="Limpar histórico desta conversa">Limpar conversa</button>
+        </section>
+
+        <section class="conversation" aria-label="Conversa com o assistente">
+          <div id="messages" class="message-list" role="log" aria-label="Mensagens da conversa" aria-live="off" tabindex="0"></div>
+        </section>
+
+        <div class="composer-wrap">
+          <div id="transcriptionStatus" class="transcription-status" role="status" aria-live="polite" hidden></div>
+          <form id="chatForm" class="composer" novalidate>
+            <label for="question">Sua pergunta</label>
+            <div class="composer-controls">
+              <textarea id="question" name="question" rows="2" minlength="2" maxlength="2200" aria-describedby="keyboardHint" placeholder="Digite sua pergunta aqui..." required></textarea>
+              <div class="composer-actions">
+                <button id="dictateButton" class="mic-button" type="button" aria-pressed="false" aria-label="Começar gravação de voz" title="Clique para gravar a pergunta. Clique novamente para terminar.">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"><rect x="9" y="3" width="6" height="12" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M6 11v1a6 6 0 0 0 12 0v-1M12 18v3m-4 0h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </button>
+                <button id="sendButton" class="send-button" type="submit">
+                  <span>Enviar</span>
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"><path d="m4 12 15-8-3 16-4.5-6.5L4 12Zm7.5 1.5L19 4" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+            </div>
+            <p class="sr-only" id="keyboardHint">Para enviar a pergunta, pressione Enter. Para inserir uma nova linha, pressione Shift mais Enter.</p>
+          </form>
+          <p class="disclaimer">As respostas são geradas por inteligência artificial e podem conter erros. Confirme informações importantes nos canais oficiais do IF Goiano.</p>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="sr-only" id="screenReaderMessage" aria-live="polite" aria-atomic="true"></div>
+</body>
+</html>

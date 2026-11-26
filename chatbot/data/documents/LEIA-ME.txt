@@ -1,0 +1,3 @@
+A SRS v1.3 anexada aqui é uma ESPECIFICAÇÃO DE REQUISITOS do portal Cão-Guia Digital, não um manual oficial de procedimentos do programa.
+Para ter respostas sobre inscrições, prazos, critérios, voluntariado ou contatos reais, insira documentos institucionais aprovados em PDF, DOCX, TXT ou MD nesta pasta e execute novamente ingest.py.
+Não inclua documentos pessoais nem dados sensíveis de participantes.
