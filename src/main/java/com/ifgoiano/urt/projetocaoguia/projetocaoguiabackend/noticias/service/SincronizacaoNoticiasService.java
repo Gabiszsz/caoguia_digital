@@ -111,13 +111,15 @@ public class SincronizacaoNoticiasService {
             String link = n.getLinkOrigem() != null ? n.getLinkOrigem() : "";
 
             boolean linkGoogleTruncado = link.contains("news.google.com/rss/articles/");
+            boolean linkBusca = link.contains("/component/search/");
             boolean isAgendaOuAntiga = titulo.startsWith("atendimento no campus")
                     || titulo.startsWith("participação em evento de entrega")
                     || titulo.startsWith("photo by ")
                     || titulo.contains("likes,")
                     || conteudo.contains("de 2019") || conteudo.contains("de 2021")
                     || conteudo.contains("de 2023")
-                    || linkGoogleTruncado;
+                    || linkGoogleTruncado
+                    || linkBusca;
 
             if (isAgendaOuAntiga) {
                 noticiaRepository.delete(n);
@@ -323,12 +325,56 @@ public class SincronizacaoNoticiasService {
                                 + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8);
                     }
 
+                    if (model.link.contains("/component/search/")) {
+                        resolverLinkDiretoIF(model);
+                    }
+
                     coletadas.putIfAbsent(model.link, model);
                 }
             } catch (IOException e) {
                 System.err.println("[IF Goiano] Aviso RSS: " + e.getMessage());
             }
         }
+    }
+
+    private void resolverLinkDiretoIF(ItemColetadoIF model) {
+        List<String> paginasParaProcurar = List.of(
+                "https://www.ifgoiano.edu.br/home/index.php/ultimas-noticias-urutai",
+                "https://www.ifgoiano.edu.br/home/index.php/ultimas-noticias",
+                "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword="
+                        + URLEncoder.encode(model.titulo, StandardCharsets.UTF_8)
+                        + "&ordering=newest&searchphrase=all&limit=20",
+                "https://www.ifgoiano.edu.br/home/index.php/component/search/?searchword=c%C3%A3o-guia&ordering=newest&searchphrase=all&limit=20"
+        );
+
+        for (String urlPagina : paginasParaProcurar) {
+            try {
+                Document doc = conectarPortal(urlPagina).timeout(10000).followRedirects(true).get();
+
+                for (Element a : doc.select("a[href]")) {
+                    String href = a.attr("abs:href");
+                    if (href.isBlank()) {
+                        String rel = a.attr("href");
+                        if (rel.startsWith("/")) {
+                            href = "https://www.ifgoiano.edu.br" + rel;
+                        }
+                    }
+                    href = limparUrl(href);
+
+                    String textoLink = limparTituloIF(a.text());
+                    if (isLinkValidoNoticiaIF(href) && !textoLink.isBlank()
+                            && isMesmaNoticia(model.titulo, textoLink, 0.45)) {
+                        System.out.println("[IF Goiano] Link direto resolvido (" + urlPagina + "): " + href);
+                        model.link = href;
+                        enriquecerComPaginaIF(model);
+                        return;
+                    }
+                }
+            } catch (Exception ignored) {
+            }
+        }
+
+        System.out.println("[IF Goiano] Mantido link de busca para: " + model.titulo);
     }
 
     private void enriquecerComPaginaIF(ItemColetadoIF model) {
@@ -494,8 +540,9 @@ public class SincronizacaoNoticiasService {
         if (url == null) return false;
         String lower = url.toLowerCase();
         if (!lower.contains("ifgoiano.edu.br/")) return false;
-        if (lower.contains("/component/") || lower.contains("/agenda") || lower.endsWith(".pdf")
-                || lower.endsWith(".jpg") || lower.endsWith(".png")) {
+        if (lower.contains("/component/search") || lower.contains("/component/finder")
+                || lower.contains("/component/users") || lower.contains("/agenda")
+                || lower.endsWith(".pdf") || lower.endsWith(".jpg") || lower.endsWith(".png")) {
             return false;
         }
         return !lower.endsWith("ifgoiano.edu.br/") && !lower.endsWith("ifgoiano.edu.br/home/") && !lower.endsWith("index.php");
