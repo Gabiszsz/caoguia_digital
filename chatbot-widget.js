@@ -4,7 +4,9 @@
 (() => {
   'use strict';
   const script = document.currentScript;
-  const api = (script?.dataset.chatbotApi || '/api/chatbot').replace(/\/$/, '');
+  const chatbotOrigin = (script?.dataset.chatbotOrigin || 'http://127.0.0.1:8001').replace(/\/$/, '');
+  const chatStreamUrl = chatbotOrigin + '/api/v1/chat/stream';
+  const transcribeUrl = chatbotOrigin + '/api/v1/transcribe';
   const mount = () => {
     if (document.getElementById('cgchat-launcher')) return;
     const root = document.createElement('div');
@@ -107,7 +109,7 @@
       announcement.textContent = 'Assistente preparando a resposta.';
       let fullAnswer = '';
       try {
-        const response = await fetch(api + '/stream', {
+        const response = await fetch(chatStreamUrl, {
           method: 'POST', headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({message: text})
         });
@@ -183,7 +185,7 @@
           const ext = blob.type.includes('mp4') ? 'm4a' : blob.type.includes('ogg') ? 'ogg' : 'webm';
           const data = new FormData(); data.append('audio', blob, 'gravacao.' + ext);
           try {
-            const response = await fetch(api + '/transcrever', {method: 'POST', body: data});
+            const response = await fetch(transcribeUrl, {method: 'POST', body: data});
             const payload = await response.json().catch(() => ({}));
             if (!response.ok) throw new Error(payload.detail || 'Não foi possível transcrever a gravação.');
             question.value = payload.text || '';

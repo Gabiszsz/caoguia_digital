@@ -8,6 +8,7 @@ from pathlib import Path
 from time import perf_counter
 import requests
 from fastapi import FastAPI, HTTPException, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from starlette.concurrency import run_in_threadpool
 from fastapi.staticfiles import StaticFiles
@@ -43,6 +44,19 @@ async def lifespan(_app):
 
 
 app = FastAPI(title="Cão-Guia Digital — Assistente Acessível", version="2.6", lifespan=lifespan)
+
+# Integração com a página local do portal; sem acesso aberto de qualquer origem.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:5500", "http://localhost:5500",
+        "http://127.0.0.1:5501", "http://localhost:5501",
+        "http://127.0.0.1:8080", "http://localhost:8080",
+    ],
+    allow_methods=["POST", "GET"],
+    allow_headers=["Content-Type"],
+)
+
 app.mount("/static", StaticFiles(directory=str(ROOT / "web")), name="static")
 
 @lru_cache(maxsize=1)
