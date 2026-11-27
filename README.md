@@ -21,7 +21,6 @@ Backend da aplicacao Cao Guia, construido com Spring Boot, JPA, seguranca JWT e 
 - `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/noticias`: modulo de noticias
 - `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/treinamento`: modulo de treinamento
 - `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/depoimento`: modulo de depoimentos
-- `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/formularios`: modulo de formularios
 - `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/estatisticas`: modulo de estatisticas
 - `src/main/java/com/ifgoiano/urt/projetocaoguia/projetocaoguiabackend/usuarios`: modulo de usuarios
 
