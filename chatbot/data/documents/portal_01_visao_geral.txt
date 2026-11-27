@@ -1,0 +1,6 @@
+FONTE: Portal Cão-Guia Digital, frontend “Front Cão_Guia.rar” enviado pela equipe via WhatsApp.
+SEÇÃO: Visão geral (#sec-home).
+TIPO: Transcrição organizada de informações disponíveis na interface, não verificação independente.
+ATENÇÃO: Informações operacionais, datas, nomes, vagas, regras de doação e perfis dos cães podem mudar. Para detalhes atuais, orientar consulta à equipe do programa.
+
+O projeto Cão Guia Digital do Instituto Federal Goiano promove a inclusão, autonomia e mobilidade de pessoas com deficiência visual por meio da formação, treinamento e acolhimento gratuito de cães assistentes.

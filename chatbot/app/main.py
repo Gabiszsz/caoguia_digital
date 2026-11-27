@@ -58,6 +58,8 @@ app.add_middleware(
 )
 
 app.mount("/static", StaticFiles(directory=str(ROOT / "web")), name="static")
+from app.portal_integration import attach_portal
+attach_portal(app)
 
 @lru_cache(maxsize=1)
 def get_assistant():

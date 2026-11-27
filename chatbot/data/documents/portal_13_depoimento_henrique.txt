@@ -1,0 +1,9 @@
+FONTE: Frontend “Front Cão_Guia.rar”, enviado pela equipe do Cão-Guia Digital via WhatsApp.
+SEÇÃO DO PORTAL: Depoimentos.
+OBSERVAÇÃO: conteúdo correspondente à versão do site fornecida pela equipe; cargos, status dos cães e critérios de participação podem mudar. Não é consulta em tempo real.
+
+Depoimento de: Henrique.
+Identificação apresentada no site: Monitor.
+Perguntas: Há depoimentos no Programa Cão-Guia? O que Henrique contou? Qual é o depoimento de Henrique?
+Depoimento publicado no frontend da equipe: “Fazer parte desse programa é uma alegria indescritível. É gratificante saber que nosso trabalho contribuirá para transformar vidas, proporcionando mais autonomia e independência às pessoas. Além disso, levar o projeto às redes sociais é uma oportunidade de aproximar a comunidade, divulgar sua importância e promover a conscientização sobre acessibilidade e inclusão.”
+Resposta resumida: Henrique, monitor, relata sua experiência e a importância do programa para autonomia e inclusão das pessoas com deficiência visual.

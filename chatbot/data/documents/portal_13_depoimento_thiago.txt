@@ -1,0 +1,9 @@
+FONTE: Frontend “Front Cão_Guia.rar”, enviado pela equipe do Cão-Guia Digital via WhatsApp.
+SEÇÃO DO PORTAL: Depoimentos.
+OBSERVAÇÃO: conteúdo correspondente à versão do site fornecida pela equipe; cargos, status dos cães e critérios de participação podem mudar. Não é consulta em tempo real.
+
+Depoimento de: Thiago.
+Identificação apresentada no site: Usuário do programa.
+Perguntas: Há depoimentos no Programa Cão-Guia? O que Thiago contou? Qual é o depoimento de Thiago?
+Depoimento publicado no frontend da equipe: “Minha história com a Nina começou em março de 2025, quando ela chegou para transformar minha vida. Como cão-guia, ela se tornou muito mais que meus olhos: é minha companheira, parceira e amiga. Juntos, vivemos novas experiências, conquistamos mais autonomia e mostramos a importância dos cães-guia na vida das pessoas com deficiência visual. Nossa caminhada é feita de confiança, carinho e muitas histórias para contar!”
+Resposta resumida: Thiago, usuário do programa, relata sua experiência e a importância do programa para autonomia e inclusão das pessoas com deficiência visual.

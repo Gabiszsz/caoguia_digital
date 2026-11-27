@@ -1,0 +1,26 @@
+FONTE: Portal Cão-Guia Digital, frontend “Front Cão_Guia.rar” enviado pela equipe via WhatsApp.
+SEÇÃO: Cães-guia (#sec-caes).
+TIPO: Transcrição organizada de informações disponíveis na interface, não verificação independente.
+ATENÇÃO: Informações operacionais, datas, nomes, vagas, regras de doação e perfis dos cães podem mudar. Para detalhes atuais, orientar consulta à equipe do programa.
+OBSERVAÇÃO: O status de cada cão pode mudar; esta base não fornece acompanhamento em tempo real.
+
+Nossos Cães-Guia
+
+Conheça alguns dos cães em formação e já formados pelo programa.
+
+Baré
+
+Fase avançada de obediência urbana e desvio de obstáculos.
+
+Raia
+
+Atualmente em atividade acompanhando sua nova dupla em Goiânia.
+
+Hera
+
+Em fase de acolhimento com família voluntária para adaptação urbana.
+
+Status apresentados nos cartões do site na versão recebida:
+- Baré: Em treinamento; fase avançada de obediência urbana e desvio de obstáculos.
+- Raia: Formado; em atividade com uma nova dupla em Goiânia.
+- Hera: Socialização; acolhimento com família voluntária para adaptação urbana.
