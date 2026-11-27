@@ -1,4 +1,4 @@
-# 🦮 Chatbot — Cão-Guia Digital
+# 🤖 Chatbot — Cão-Guia Digital
 
 > **Inteligência artificial e acessibilidade para facilitar o acesso às informações do Programa Cão-Guia.**
 
